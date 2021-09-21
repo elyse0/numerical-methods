@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
 </head>
 <body>
+<div id="calculator" style="width: 600px; height: 400px;"></div>
 
+<script>
+    const elt = document.getElementById('calculator');
+    const calculator = Desmos.GraphingCalculator(elt);
+    calculator.setExpression({ id: 'graph1', latex: 'y=x^2' });
+    calculator.setExpression({ id: 'graph2', latex: String.raw`18\cdot{x}^{17}`});
+
+    const receiveDataFromWeb=  (message)=> {
+        console.log(message);
+        console.log(message.data)
+        calculator.setExpression({ id: 'graph1', latex: message.data });
+    }
+
+    window.addEventListener("message", receiveDataFromWeb);
+
+
+</script>
 </body>
 </html>

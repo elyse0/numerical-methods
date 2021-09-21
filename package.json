@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "function-plot": "^1.22.7",
+    "mathjs": "^9.4.4",
+    "vue": "^2.6.11",
+    "vue-iframes": "0.0.16"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
