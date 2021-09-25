@@ -1,102 +1,29 @@
 <template>
   <div id="app">
-
-    <div class="container is-fluid">
-      <br>
-      <div class="columns">
-        <div class="column">
-
-          <b-field label="Función" label-position="inside">
-            <b-input v-model="input"></b-input>
-          </b-field>
-
-          <b>Intervalo [a, b] en donde encuentra la raiz</b>
-          <b-field grouped>
-            <b-field label="a" label-position="inside">
-              <b-input v-model="firstPoint" type="number" step="0.0001" expanded></b-input>
-            </b-field>
-            <b-field label="b" label-position="inside">
-              <b-input v-model="secondPoint" type="number" step="0.0001" expanded></b-input>
-            </b-field>
-          </b-field>
-
-
-          <p><b>Función:</b> {{ parsedFunction }}</p>
-          <p><b>Latex de función:</b> {{parsedFunction.toTex()}}</p>
-          <p><b>Punto inicial:</b> {{ firstPoint }}</p>
-
-          {{isIntervalValid}}
-        </div>
-
-        <div class="column">
-          <vue-iframe
-              src="/plot/plot.html"
-              @load="onLoadIframe"
-          />
-        </div>
-
-      </div>
-    </div>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
 </template>
 
-<script>
-import {create, all} from 'mathjs'
-const config = {}
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import HelloWorld from './components/HelloWorld.vue';
 
-const math = create(all, config)
-
-export default {
-  name: 'App',
-  components: {},
-  data: function () {
-    return {
-      input: '',
-      firstPoint: 0,
-      secondPoint: 0,
-      myIframe: null,
-      msg: ''
-    }
+@Component({
+  components: {
+    HelloWorld,
   },
-  methods: {
-    onLoadIframe(frame) {
-      console.log("Iframe loaded")
-      this.myIframe = frame.contentWindow
-    },
-    bisectionMethod() {
-    }
-  },
-  computed: {
-    parsedFunction() {
-      try {
-        return math.parse(this.input)
-      } catch (e) {
-        console.log("Error parsing function")
-        return math.simplify('0')
-      }
-    },
-    derivative() {
-      return math.derivative(this.parsedFunction, 'x')
-    },
-    isIntervalValid(){
-      const f1 = math.evaluate(this.parsedFunction.toString(), {x: this.firstPoint})
-      const f2 = math.evaluate(this.parsedFunction.toString(), {x: this.secondPoint})
-      return (f1 * f2) < 0
-    }
-  },
-  watch: {
-    parsedFunction: function (value) {
-
-      const latex =  value.toTex().toString()
-      console.log(latex)
-      this.myIframe.postMessage({function: latex})
-    }
-  }
-}
+})
+export default class App extends Vue {}
 </script>
 
 <style>
-iframe{
-  height: 600px !important;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>
