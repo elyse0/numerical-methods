@@ -10,14 +10,14 @@
 
 <script>
     const elt = document.getElementById('calculator');
-    const calculator = Desmos.GraphingCalculator(elt);
-    calculator.setExpression({ id: 'graph1', latex: 'y=x^2' });
-    calculator.setExpression({ id: 'graph2', latex: String.raw`18\cdot{x}^{17}`});
+    const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true});
+    //calculator.setExpression({ id: 'graph1', latex: 'y=x^2' });
+    //calculator.setExpression({ id: 'graph2', latex: String.raw`18\cdot{x}^{17}`});
 
     const receiveDataFromWeb=  (message)=> {
         console.log(message);
         console.log(message.data)
-        calculator.setExpression({ id: 'graph1', latex: message.data });
+        calculator.setExpression({ id: 'graph1', latex: message.data.function });
     }
 
     window.addEventListener("message", receiveDataFromWeb);

@@ -1,11 +1,16 @@
 import Vue from 'vue'
+import Buefy from 'buefy'
 import VueIframe from 'vue-iframes'
 
-import App from './App.vue'
+// Stylesheet
+import 'buefy/dist/buefy.css'
+
+Vue.use(Buefy)
+Vue.use(VueIframe)
 
 Vue.config.productionTip = false
 
-Vue.use(VueIframe)
+import App from './App.vue'
 
 new Vue({
   render: h => h(App),
