@@ -24,9 +24,9 @@
 
             Raíz: {{bisectionMethod[bisectionMethod.length - 1].p3.x.toFixed(precision + 2)}}
 
-          <p><b>Función:</b> {{ parsedFunction }}</p>
-          <p><b>Latex de función:</b> {{parsedFunction.toTex()}}</p>
-          <p><b>Punto inicial:</b> {{ firstPoint }}</p>
+            <div class="has-text-centered">
+              <katex-element :expression="'f(x)='+parsedFunction.toTex()"/>
+            </div>
 
             <b-field :label="'Iteración ' + this.selectedIteration"   v-if="bisectionMethod.length !== 1">
               <b-slider v-model="selectedIteration" :min="0" :max="bisectionMethod.length - 1" ticks></b-slider>
