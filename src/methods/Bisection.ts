@@ -28,8 +28,22 @@ class Bisection {
                   initialPoints: BisectionInitialPoints,
                   precision: number = 4): BisectionIteration[] | null {
 
+        // TODO: Find a better way to accept only functions with X
+        try {
+            mathFunction.evaluate({x: 1})
+        } catch (e) {
+            return null
+        }
+
+        if (compare(initialPoints.p1, initialPoints.p2) >= 0) {
+            return null
+        }
+
         const functionValueAtP1 = mathFunction.evaluate({x: initialPoints.p1})
         const functionValueAtP2 = mathFunction.evaluate({x: initialPoints.p2})
+
+        if (functionValueAtP1 === undefined || functionValueAtP2 === undefined)
+            return null
 
         if (functionValueAtP1 * functionValueAtP2 > 0) {
             return null
