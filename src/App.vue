@@ -42,18 +42,21 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {parse, simplify, derivative, evaluate} from 'mathjs'
+import {parse, simplify, MathNode} from 'mathjs'
+
+import AppBisectionIterationButtons from '@/components/Bisection/AppBisectionIterationButtons.vue'
+import {Bisection, BisectionInitialPoints, BisectionIteration} from '@/methods/Bisection'
 
 export default Vue.extend({
   name: 'App',
-  components: {},
+  components: {AppBisectionIterationButtons},
   data: function () {
     return {
-      input: '',
-      firstPoint: 0,
-      secondPoint: 0,
-      myIframe: any ,
-      msg: ''
+      input: '' as string,
+      initialPoints: {p1: 0, p2: 0} as BisectionInitialPoints,
+      myIframe: null as Window | null,
+      selectedIteration: 0 as number,
+      precision: 4 as number
     }
   },
   methods: {
@@ -77,13 +80,27 @@ export default Vue.extend({
         return simplify('0')
       }
     },
-    derivative() {
-      return derivative(this.parsedFunction, 'x')
+    isIntervalValid(): boolean {
+      console.log("Checking interval")
+      return Bisection.isIntervalValid(this.parsedFunction, this.initialPoints)
     },
-    isIntervalValid(){
-      const f1 = evaluate(this.parsedFunction.toString(), {x: this.firstPoint})
-      const f2 = evaluate(this.parsedFunction.toString(), {x: this.secondPoint})
-      return (f1 * f2) < 0
+    bisectionMethod(): BisectionIteration[] | null {
+      try {
+        return Bisection.method(this.parsedFunction.compile(), this.initialPoints)
+      } catch (e) {
+        console.log(e)
+        this.$buefy.toast.open({
+          duration: 2500,
+          message: "La función ingresada no es valida",
+          position: 'is-bottom',
+          type: 'is-danger'
+        })
+        // eslint-disable-next-line vue/no-async-in-computed-properties
+        setTimeout(() => {
+          location.reload()
+        }, 1000)
+        return null
+      }
     }
   },
   watch: {
