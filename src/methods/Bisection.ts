@@ -56,7 +56,7 @@ class Bisection {
         }
 
         // Middle point
-        const p3 = (initialPoints.p1 + initialPoints.p2) / 2
+        const p3 = sum(initialPoints.p1/2, initialPoints.p2/2)
         const functionValueAtP3 = mathFunction.evaluate({x: p3})
 
         const bisectionIteration: BisectionIteration = {
@@ -91,7 +91,7 @@ class Bisection {
                      initialPoints: BisectionInitialIterationPoints,
                      precision: number): BisectionIteration[] {
 
-        const p3 = (initialPoints.p1.x + initialPoints.p2.x) / 2
+        const p3 = sum(initialPoints.p1.x/2, initialPoints.p2.x/2)
         const functionValueAtP3 = mathFunction.evaluate({x: p3})
 
         const bisectionIteration: BisectionIteration = {
