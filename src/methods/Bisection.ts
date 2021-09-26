@@ -139,14 +139,11 @@ class Bisection {
         }
 
         if (bisectionIteration.p3.sign === -1){
-            return {p1: positive, p2: bisectionIteration.p3}
+            return {p1: bisectionIteration.p3, p2: positive}
         } else {
             return {p1: negative, p2: bisectionIteration.p3}
         }
     }
 }
 
-const mathFunction = parse('(x^4)+(3*x^3)-3')
-console.log(mathFunction.toTex())
-
-console.log(Bisection.method(mathFunction.compile(), {p1: - 3, p2: 2}))
+export {Bisection, BisectionInitialPoints, BisectionIteration, BisectionIterationPoint}
