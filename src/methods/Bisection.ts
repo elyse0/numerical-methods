@@ -1,4 +1,4 @@
-import {EvalFunction, sign, evaluate, abs, parse} from 'mathjs'
+import {EvalFunction, sign, evaluate, abs, compare, sum} from 'mathjs'
 
 interface BisectionInitialPoints {
     p1 : number,
