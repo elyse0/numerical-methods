@@ -79,7 +79,26 @@ export default Vue.extend({
       if (window)
         this.myIframe = window
     },
-    bisectionMethod() {
+    updateGraph() {
+      if (!this.myIframe)
+        return
+      // @ts-ignore
+      this.myIframe.postMessage({mathFunction: this.parsedFunction.toTex()})
+      if (!this.bisectionMethod){
+        // @ts-ignore
+        this.myIframe.postMessage({p1: ''})
+        // @ts-ignore
+        this.myIframe.postMessage({p2: ''})
+        // @ts-ignore
+        this.myIframe.postMessage({p3: ''})
+      } else {
+        // @ts-ignore
+        this.myIframe.postMessage({p1: this.bisectionMethod[this.selectedIteration].p1})
+        // @ts-ignore
+        this.myIframe.postMessage({p2: this.bisectionMethod[this.selectedIteration].p2})
+        // @ts-ignore
+        this.myIframe.postMessage({p3: this.bisectionMethod[this.selectedIteration].p3})
+      }
     }
   },
   computed: {
@@ -115,11 +134,14 @@ export default Vue.extend({
     }
   },
   watch: {
-    parsedFunction: function (value) {
-
-      const latex =  value.toTex().toString()
-      console.log(latex)
-      this.myIframe.postMessage({function: latex})
+    parsedFunction: function () {
+      this.updateGraph()
+    },
+    selectedIteration: function () {
+      this.updateGraph()
+    },
+    bisectionMethod: function (){
+      this.updateGraph()
     }
   }
 })
