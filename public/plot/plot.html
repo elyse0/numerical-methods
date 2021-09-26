@@ -11,13 +11,46 @@
 <script>
     const elt = document.getElementById('calculator');
     const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true});
-    //calculator.setExpression({ id: 'graph1', latex: 'y=x^2' });
-    //calculator.setExpression({ id: 'graph2', latex: String.raw`18\cdot{x}^{17}`});
+    let mathFunction = {id: "function", latex: ""};
+    let p1 = {id: "p1", latex: "", color:""};
+    let p2 = {id: "p2", latex: "", color:""};
+    let p3 = {id: "p3", latex: "", color:""};
 
     const receiveDataFromWeb=  (message)=> {
-        console.log(message);
-        console.log(message.data)
-        calculator.setExpression({ id: 'graph1', latex: message.data.function });
+
+        if (message.data.mathFunction !== undefined) {
+            mathFunction.latex = message.data.mathFunction
+        }
+
+        if (message.data.p1 !== undefined) {
+            p1.latex = `(${message.data.p1.x},0)`
+            p1.color = getColor(message.data.p1.fx)
+        }
+
+        if (message.data.p2 !== undefined) {
+            p2.latex = `(${message.data.p2.x},0)`
+            p2.color = getColor(message.data.p2.fx)
+        }
+
+        if (message.data.p3 !== undefined) {
+            p3.latex = `(${message.data.p3.x},0)`
+            p3.color = getColor(message.data.p3.fx)
+        }
+
+        calculator.setExpression(mathFunction);
+        calculator.setExpression(p1);
+        calculator.setExpression(p2);
+        calculator.setExpression(p3);
+    }
+
+    const getColor = function (value) {
+        if (value > 0)
+            return "#c74440"
+
+        if (value < 0)
+            return "#2d70b3"
+
+        return "#388c46"
     }
 
     window.addEventListener("message", receiveDataFromWeb);
