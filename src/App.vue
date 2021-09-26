@@ -13,19 +13,30 @@
           <b>Intervalo [a, b] en donde encuentra la raiz</b>
           <b-field grouped>
             <b-field label="a" label-position="inside">
-              <b-input v-model="firstPoint" type="number" step="0.0001" expanded></b-input>
+              <b-input v-model="initialPoints.p1" type="number" step="0.0001" expanded></b-input>
             </b-field>
             <b-field label="b" label-position="inside">
-              <b-input v-model="secondPoint" type="number" step="0.0001" expanded></b-input>
+              <b-input v-model="initialPoints.p2" type="number" step="0.0001" expanded></b-input>
             </b-field>
           </b-field>
 
+          <div class="container" v-if="bisectionMethod">
+
+            Raíz: {{bisectionMethod[bisectionMethod.length - 1].p3.x.toFixed(precision + 2)}}
 
           <p><b>Función:</b> {{ parsedFunction }}</p>
           <p><b>Latex de función:</b> {{parsedFunction.toTex()}}</p>
           <p><b>Punto inicial:</b> {{ firstPoint }}</p>
 
-          {{isIntervalValid}}
+            <b-field :label="'Iteración ' + this.selectedIteration"   v-if="bisectionMethod.length !== 1">
+              <b-slider v-model="selectedIteration" :min="0" :max="bisectionMethod.length - 1" ticks></b-slider>
+            </b-field>
+            <br>
+            <AppBisectionIterationButtons :iteration="bisectionMethod[selectedIteration]"
+                                          :precision="precision + 2"/>
+
+            {{bisectionMethod[selectedIteration]}}
+          </div>
         </div>
 
         <div class="column">
@@ -72,7 +83,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    parsedFunction() {
+    parsedFunction(): MathNode {
       try {
         return parse(this.input)
       } catch (e) {
