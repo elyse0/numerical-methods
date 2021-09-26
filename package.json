@@ -11,11 +11,13 @@
     "buefy": "^0.9.10",
     "core-js": "^3.6.5",
     "function-plot": "^1.22.7",
+    "katex": "^0.13.18",
     "mathjs": "^9.4.4",
     "vue": "^2.6.11",
     "vue-autosize-input": "^0.1.0",
     "vue-class-component": "^7.2.3",
     "vue-iframes": "0.0.16",
+    "vue-katex": "^0.5.0",
     "vue-property-decorator": "^9.1.2"
   },
   "devDependencies": {
