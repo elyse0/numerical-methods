@@ -100,6 +100,17 @@ class Bisection {
         }
     }
 
+    static isIntervalValid(mathFunction: EvalFunction, initialPoints: BisectionInitialPoints){
+
+        if (initialPoints.p1 === initialPoints.p2)
+            return false
+
+        const f1 = mathFunction.evaluate({x: initialPoints.p1})
+        const f2 = mathFunction.evaluate({x: initialPoints.p2})
+
+        return f1 * f2 < 0
+    }
+
     static getNextInterval(bisectionIteration: BisectionIteration): BisectionInitialIterationPoints {
 
         let positive;
