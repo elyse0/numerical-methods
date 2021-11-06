@@ -2,6 +2,21 @@ import {abs, EvalFunction, evaluate} from "mathjs"
 
 class NumericalMethod {
 
+    static getParsedFunction(inputFunction: string): MathNode | null {
+        try {
+            const parsedFunction = parse(inputFunction)
+
+            if (parsedFunction.equals(parse(""))) {
+                return null
+            }
+
+            return parsedFunction
+        } catch (e) {
+            console.log("Error parsing function")
+            return null
+        }
+    }
+    
     static isValidFunction(mathFunction: EvalFunction, point: number = 1): boolean {
 
         try {
