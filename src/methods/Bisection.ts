@@ -1,4 +1,4 @@
-import NumericalMethod from '@/methods/NumericalMethod'
+import NumericalMethod, {Root} from '@/methods/NumericalMethod'
 import {EvalFunction, sign, compare, sum, MathNode} from 'mathjs'
 
 interface BisectionInitialPoints {
@@ -27,16 +27,18 @@ class Bisection extends NumericalMethod {
 
     public parsedFunction: MathNode
     public bisectionIterations: BisectionIteration[]
-    public root: number
+    public precision: number
+    public root: Root
 
-    private constructor(parsedFunction: MathNode, bisectionIterations: BisectionIteration[]) {
+    private constructor(parsedFunction: MathNode, bisectionIterations: BisectionIteration[], precision: number) {
         super()
         this.parsedFunction = parsedFunction
         this.bisectionIterations = bisectionIterations
-        this.root = bisectionIterations[bisectionIterations.length - 1].p3.x
+        this.precision = precision
+        this.root = {x: bisectionIterations[bisectionIterations.length - 1].p3.x, fx: bisectionIterations[bisectionIterations.length - 1].p3.fx}
     }
 
-    static create(inputFunction: string, initialPoints: BisectionInitialPoints): Bisection | null {
+    static create(inputFunction: string, initialPoints: BisectionInitialPoints, precision: number = 4): Bisection | null {
         const parsedFunction = Bisection.getParsedFunction(inputFunction)
         if (!parsedFunction) {
             console.log("Error parsing function")
@@ -46,12 +48,12 @@ class Bisection extends NumericalMethod {
             console.log("Interval is invalid")
             return null
         }
-        const bisectionIterations = Bisection.method(parsedFunction.compile(), initialPoints)
+        const bisectionIterations = Bisection.method(parsedFunction.compile(), initialPoints, precision)
         if (!bisectionIterations) {
             console.log("Error computing iterations")
             return null
         }
-        return new Bisection(parsedFunction, bisectionIterations)
+        return new Bisection(parsedFunction, bisectionIterations, precision)
     }
 
     static method(mathFunction: EvalFunction,
@@ -120,7 +122,7 @@ class Bisection extends NumericalMethod {
             }
         }
 
-        if (Bisection.isZero(bisectionIteration.p3.fx) || iterationNumber === 1000) {
+        if (Bisection.isZero(bisectionIteration.p3.fx, precision) || iterationNumber === 1000) {
             return [bisectionIteration]
         }
 
