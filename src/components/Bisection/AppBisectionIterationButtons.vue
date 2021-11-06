@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="iteration">
     <div class="columns is-mobile is-centered">
       <div class="column has-text-centered">
         <h5 class="subtitle is-5">P1</h5>
