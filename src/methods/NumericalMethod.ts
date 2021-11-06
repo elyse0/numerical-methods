@@ -1,5 +1,10 @@
 import {EvalFunction, evaluate, MathNode, parse} from "mathjs"
 
+interface Root {
+    x: number,
+    fx: number
+}
+
 class NumericalMethod {
 
     static getParsedFunction(inputFunction: string): MathNode | null {
@@ -61,3 +66,4 @@ class NumericalMethod {
 }
 
 export default NumericalMethod
+export {Root}
