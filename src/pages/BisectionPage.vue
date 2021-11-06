@@ -13,6 +13,7 @@
         <b-field grouped>
           <AppNumberInput label="a" v-model="initialPoints.p1"/>
           <AppNumberInput label="b" v-model="initialPoints.p2"/>
+          <AppNumberInput label="Precisión" v-model="precision" step="1"/>
         </b-field>
 
         <div v-if="parsedFunction" class="has-text-centered" style="padding-bottom: 10px">
@@ -21,15 +22,15 @@
 
         <div v-if="bisectionMethod && isIntervalValid" class="container has-text-centered" >
           <div style="padding-bottom: 10px">
-            <katex-element :expression="'f(0)='+root"/>
+            <katex-element :expression="'f('+root.x + ') = ' + root.fx"/>
           </div>
 
-          <b-field :label="'Iteración ' + this.selectedIteration" v-if="bisectionMethod.bisectionIterations.length !== 1">
-            <b-slider v-model="selectedIteration" :min="0" :max="bisectionMethod.bisectionIterations.length - 1" ticks></b-slider>
+          <b-field :label="'Iteración ' + (this.selectedIteration) + '/' + (this.bisectionMethod.bisectionIterations.length)"
+                   v-if="bisectionMethod.bisectionIterations.length !== 1">
+            <b-slider v-model="selectedIteration" :min="1" :max="bisectionMethod.bisectionIterations.length" ticks/>
           </b-field>
           <br>
-          <AppBisectionIterationButtons :iteration="bisectionMethod.bisectionIterations[selectedIteration]"
-                                        :precision="precision + 1"/>
+          <AppBisectionIterationButtons :iteration="currentIteration" :precision="precision + 1"/>
         </div>
 
       </div>
@@ -47,13 +48,14 @@
 
 <script lang="ts">
 import AppNumberInput from '@/components/AppNumberInput.vue'
+import {Root} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
 import AppLayout from '@/components/layout/AppLayout.vue'
 import AppBisectionIterationButtons from '@/components/Bisection/AppBisectionIterationButtons.vue'
 
-import {Bisection, BisectionInitialPoints} from '@/methods/Bisection'
+import {Bisection, BisectionInitialPoints, BisectionIteration} from '@/methods/Bisection'
 
 @Component({
   components: {AppNumberInput, AppLayout, AppBisectionIterationButtons}
@@ -70,19 +72,26 @@ export default class BisectionPage extends Vue {
 
   get bisectionMethod(): Bisection | null {
 
-    console.log("Computing bisection method")
     if (this.parsedFunction && this.isIntervalValid)
-      return Bisection.create(this.inputFunction, this.initialPoints)
+      return Bisection.create(this.inputFunction, this.initialPoints, this.precision)
 
     return null
   }
 
-  get root(): number | null {
+  get root(): Root | null {
     if (!this.bisectionMethod){
       return null
     }
 
-    return Bisection.round(this.bisectionMethod.root)
+    return {x: Bisection.round(this.bisectionMethod.root.x), fx: Bisection.round(this.bisectionMethod.root.fx)}
+  }
+
+  get currentIteration(): BisectionIteration | null {
+    if (!this.bisectionMethod) {
+      return null
+    }
+
+    return this.bisectionMethod.bisectionIterations[this.selectedIteration - 1]
   }
 
   get parsedFunction(): MathNode | null {
@@ -97,21 +106,6 @@ export default class BisectionPage extends Vue {
     return Bisection.isIntervalValid(this.parsedFunction, this.initialPoints)
   }
 
-  @Watch("parsedFunction")
-  onParsedFunction() {
-    this.updateGraph()
-  }
-
-  @Watch("selectedIteration")
-  onSelectedIteration() {
-    this.updateGraph()
-  }
-
-  @Watch("bisectionMethod")
-  onBisectionMethod() {
-    this.updateGraph()
-  }
-
   onLoadIframe(frame: HTMLFrameElement) {
     const window = frame.contentWindow
 
@@ -123,23 +117,47 @@ export default class BisectionPage extends Vue {
     if (!this.myIframe)
       return
 
-    if (!this.parsedFunction) {
-      this.myIframe.postMessage({mathFunction: ""}, "*")
-    } else {
-      this.myIframe.postMessage({mathFunction: "f(x)=" + this.parsedFunction.toTex()}, "*")
+    const message: any = {}
+    message["mathFunction"] = this.parsedFunction ? "f(x)=" + this.parsedFunction.toTex() : ""
+
+    if (!this.currentIteration && this.parsedFunction) {
+      message["p1"] = {x: this.initialPoints.p1, fx: Bisection.evaluate(this.parsedFunction.compile(), this.initialPoints.p1)}
+      message["p2"] = {x: this.initialPoints.p2, fx: Bisection.evaluate(this.parsedFunction.compile(), this.initialPoints.p2)}
     }
 
-    if (!this.bisectionMethod) {
-      this.myIframe.postMessage({p1: ''}, "*")
-      this.myIframe.postMessage({p2: ''}, "*")
-      this.myIframe.postMessage({p3: ''}, "*")
-    } else {
-      this.myIframe.postMessage({p1: this.bisectionMethod.bisectionIterations[this.selectedIteration].p1}, "*")
-      this.myIframe.postMessage({p2: this.bisectionMethod.bisectionIterations[this.selectedIteration].p2}, "*")
-      this.myIframe.postMessage({p3: this.bisectionMethod.bisectionIterations[this.selectedIteration].p3}, "*")
+    if (this.currentIteration) {
+      message["p1"] = this.currentIteration.p1
+      message["p2"] = this.currentIteration.p2
+      message["p3"] = this.currentIteration.p3
     }
+
+    this.myIframe.postMessage(message, "*")
   }
 
+  @Watch("parsedFunction")
+  onParsedFunction() {
+    this.updateGraph()
+  }
+
+  @Watch("bisectionMethod")
+  onBisectionMethod() {
+    this.updateGraph()
+  }
+
+  @Watch("currentIteration")
+  onCurrentIteration() {
+    this.updateGraph()
+  }
+
+  @Watch("initialPoints.p1")
+  onInitialPointsP1() {
+    this.updateGraph()
+  }
+
+  @Watch("initialPoints.p2")
+  onInitialPointsP2() {
+    this.updateGraph()
+  }
 }
 </script>
 
