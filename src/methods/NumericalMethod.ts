@@ -1,4 +1,4 @@
-import {abs, EvalFunction, evaluate} from "mathjs"
+import {EvalFunction, evaluate, MathNode, parse} from "mathjs"
 
 class NumericalMethod {
 
@@ -40,7 +40,7 @@ class NumericalMethod {
 
     static round(number: number, precision: number = 4): number {
 
-        return evaluate(abs(number).toFixed(precision).toString())
+        return evaluate(number.toFixed(precision).toString())
     }
 
     static equal(a: number, b: number, precision: number = 4): boolean {
