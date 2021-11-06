@@ -1,5 +1,5 @@
 import NumericalMethod from '@/methods/NumericalMethod'
-import {EvalFunction, sign, evaluate, abs, compare, sum, parse} from 'mathjs'
+import {EvalFunction, sign, compare, sum, MathNode} from 'mathjs'
 
 interface BisectionInitialPoints {
     p1 : number,
@@ -24,6 +24,35 @@ interface BisectionIteration {
 }
 
 class Bisection extends NumericalMethod {
+
+    public parsedFunction: MathNode
+    public bisectionIterations: BisectionIteration[]
+    public root: number
+
+    private constructor(parsedFunction: MathNode, bisectionIterations: BisectionIteration[]) {
+        super()
+        this.parsedFunction = parsedFunction
+        this.bisectionIterations = bisectionIterations
+        this.root = bisectionIterations[bisectionIterations.length - 1].p3.x
+    }
+
+    static create(inputFunction: string, initialPoints: BisectionInitialPoints): Bisection | null {
+        const parsedFunction = Bisection.getParsedFunction(inputFunction)
+        if (!parsedFunction) {
+            console.log("Error parsing function")
+            return null
+        }
+        if (!Bisection.isIntervalValid(parsedFunction, initialPoints)) {
+            console.log("Interval is invalid")
+            return null
+        }
+        const bisectionIterations = Bisection.method(parsedFunction.compile(), initialPoints)
+        if (!bisectionIterations) {
+            console.log("Error computing iterations")
+            return null
+        }
+        return new Bisection(parsedFunction, bisectionIterations)
+    }
 
     static method(mathFunction: EvalFunction,
                   initialPoints: BisectionInitialPoints,
@@ -132,12 +161,3 @@ class Bisection extends NumericalMethod {
 }
 
 export {Bisection, BisectionInitialPoints, BisectionIteration, BisectionIterationPoint}
-
-const mathFunction = parse("x").compile()
-
-const initialPoints = {
-    p1: -1,
-    p2: 1
-}
-
-console.log(Bisection.method(mathFunction, initialPoints))
