@@ -5,7 +5,7 @@ interface Root {
     fx: number
 }
 
-class NumericalMethod {
+abstract class NumericalMethod {
 
     static getParsedFunction(inputFunction: string): MathNode | null {
         try {
