@@ -1,6 +1,6 @@
-import {EvalFunction} from 'mathjs'
+import {EvalFunction, MathNode} from 'mathjs'
 
-import NumericalMethod from '@/methods/NumericalMethod'
+import NumericalMethod, {Root} from '@/methods/NumericalMethod'
 
 interface FixedPointIteration {
     x: number
@@ -9,6 +9,40 @@ interface FixedPointIteration {
 }
 
 class FixedPoint extends NumericalMethod {
+
+    public parsedFunctionFx: MathNode
+    public parsedFunctionGx: MathNode
+    public fixedPointIterations: FixedPointIteration[]
+    public precision: number
+    public root: Root
+
+    private constructor(parsedFunctionFx: MathNode, parsedFunctionGx: MathNode, fixedPointIterations: FixedPointIteration[], precision: number) {
+        super()
+        this.parsedFunctionFx = parsedFunctionFx
+        this.parsedFunctionGx = parsedFunctionGx
+        this.fixedPointIterations = fixedPointIterations
+        this.precision = precision
+        this.root = {x: fixedPointIterations[fixedPointIterations.length - 1].x, fx: fixedPointIterations[fixedPointIterations.length - 1].fx}
+    }
+
+    static create(inputFunctionFx: string, inputFunctionGx: string, initialPoint: number, precision: number = 4) {
+        const parsedFunctionFx = FixedPoint.getParsedFunction(inputFunctionFx)
+        if (!parsedFunctionFx) {
+            console.log("Error parsing function fx")
+            return null
+        }
+        const parsedFunctionGx = FixedPoint.getParsedFunction(inputFunctionGx)
+        if (!parsedFunctionGx) {
+            console.log("Error parsing function gx")
+            return null
+        }
+        const fixedPointIterations = FixedPoint.method(parsedFunctionFx.compile(), parsedFunctionGx.compile(), initialPoint, precision)
+        if (!fixedPointIterations) {
+            console.log("Error computing iterations")
+            return null
+        }
+        return new FixedPoint(parsedFunctionFx, parsedFunctionGx, fixedPointIterations, precision)
+    }
 
     static method(mathFunctionFx: EvalFunction,
                   mathFunctionGx: EvalFunction,
