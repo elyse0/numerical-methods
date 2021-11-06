@@ -1,4 +1,5 @@
-import {EvalFunction, sign, evaluate, abs, compare, sum} from 'mathjs'
+import NumericalMethod from '@/methods/NumericalMethod'
+import {EvalFunction, sign, evaluate, abs, compare, sum, parse} from 'mathjs'
 
 interface BisectionInitialPoints {
     p1 : number,
@@ -22,42 +23,27 @@ interface BisectionIteration {
     p3: BisectionIterationPoint
 }
 
-class Bisection {
+class Bisection extends NumericalMethod {
 
     static method(mathFunction: EvalFunction,
                   initialPoints: BisectionInitialPoints,
                   precision: number = 4): BisectionIteration[] | null {
 
-        // TODO: Find a better way to accept only functions with X
-        try {
-            mathFunction.evaluate({x: 1})
-        } catch (e) {
-            return null
-        }
-
         if (compare(initialPoints.p1, initialPoints.p2) >= 0) {
             return null
         }
 
-        const functionValueAtP1 = mathFunction.evaluate({x: initialPoints.p1})
-        const functionValueAtP2 = mathFunction.evaluate({x: initialPoints.p2})
+        const functionValueAtP1 = Bisection.evaluate(mathFunction, initialPoints.p1)
+        const functionValueAtP2 = Bisection.evaluate(mathFunction, initialPoints.p2)
 
-        if (functionValueAtP1 === undefined || functionValueAtP2 === undefined)
-            return null
-
-        if (functionValueAtP1 * functionValueAtP2 > 0) {
-            return null
-        }
-
-        if (functionValueAtP1 * functionValueAtP2 === 0) {
-            //const root = functionValueAtP1 === 0 ? initialPoints.p1 : initialPoints.p2
-            // FIXME: What should I return?
+        if (functionValueAtP1 * functionValueAtP2 >= 0) {
+            // TODO: What should I return when it's zero
             return null
         }
 
         // Middle point
         const p3 = sum(initialPoints.p1/2, initialPoints.p2/2)
-        const functionValueAtP3 = mathFunction.evaluate({x: p3})
+        const functionValueAtP3 = Bisection.evaluate(mathFunction, p3)
 
         const bisectionIteration: BisectionIteration = {
             p1: {
@@ -77,22 +63,23 @@ class Bisection {
             }
         }
 
-        const possibleRoot = evaluate(abs(functionValueAtP3.toFixed(precision)).toString())
-
-        if (possibleRoot === 0) {
+        if (Bisection.isZero(bisectionIteration.p3.fx)){
             return [bisectionIteration]
         }
 
         const nextInterval = this.getNextInterval(bisectionIteration)
+
         return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision))
     }
 
     static iteration(mathFunction: EvalFunction,
                      initialPoints: BisectionInitialIterationPoints,
-                     precision: number): BisectionIteration[] {
+                     precision: number,
+                     iterationNumber: number = 0
+    ): BisectionIteration[] {
 
         const p3 = sum(initialPoints.p1.x/2, initialPoints.p2.x/2)
-        const functionValueAtP3 = mathFunction.evaluate({x: p3})
+        const functionValueAtP3 = Bisection.evaluate(mathFunction, p3)
 
         const bisectionIteration: BisectionIteration = {
             p1: initialPoints.p1,
@@ -104,31 +91,18 @@ class Bisection {
             }
         }
 
-        const possibleRoot = evaluate(abs(functionValueAtP3.toFixed(precision)).toString())
-
-        if (possibleRoot === 0) {
+        if (Bisection.isZero(bisectionIteration.p3.fx) || iterationNumber === 1000) {
             return [bisectionIteration]
-        } else {
-            const nextInterval = this.getNextInterval(bisectionIteration)
-            return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision))
         }
-    }
 
-    static isIntervalValid(mathFunction: EvalFunction, initialPoints: BisectionInitialPoints){
-
-        if (initialPoints.p1 === initialPoints.p2)
-            return false
-
-        const f1 = mathFunction.evaluate({x: initialPoints.p1})
-        const f2 = mathFunction.evaluate({x: initialPoints.p2})
-
-        return f1 * f2 < 0
+        const nextInterval = this.getNextInterval(bisectionIteration)
+        return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision, iterationNumber++))
     }
 
     static getNextInterval(bisectionIteration: BisectionIteration): BisectionInitialIterationPoints {
 
-        let positive;
-        let negative;
+        let positive: BisectionIterationPoint;
+        let negative: BisectionIterationPoint;
 
         if (bisectionIteration.p1.sign === -1){
             negative = bisectionIteration.p1
@@ -144,6 +118,26 @@ class Bisection {
             return {p1: negative, p2: bisectionIteration.p3}
         }
     }
+
+    static isIntervalValid(mathFunction: EvalFunction, initialPoints: BisectionInitialPoints){
+
+        if (initialPoints.p1 === initialPoints.p2)
+            return false
+
+        const f1 = mathFunction.evaluate({x: initialPoints.p1})
+        const f2 = mathFunction.evaluate({x: initialPoints.p2})
+
+        return f1 * f2 < 0
+    }
 }
 
 export {Bisection, BisectionInitialPoints, BisectionIteration, BisectionIterationPoint}
+
+const mathFunction = parse("x").compile()
+
+const initialPoints = {
+    p1: -1,
+    p2: 1
+}
+
+console.log(Bisection.method(mathFunction, initialPoints))

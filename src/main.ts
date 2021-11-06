@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import router from '@/router'
+
 import Buefy from 'buefy'
 // @ts-ignore
 import VueIframe from 'vue-iframes'
@@ -18,5 +20,6 @@ Vue.config.productionTip = false
 import App from './App.vue'
 
 new Vue({
-  render: h => h(App),
+    render: h => h(App),
+    router,
 }).$mount('#app')
