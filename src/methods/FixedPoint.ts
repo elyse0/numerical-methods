@@ -12,7 +12,7 @@ class FixedPoint extends NumericalMethod {
 
     public parsedFunctionFx: MathNode
     public parsedFunctionGx: MathNode
-    public fixedPointIterations: FixedPointIteration[]
+    public iterations: FixedPointIteration[]
     public precision: number
     public root: Root
 
@@ -20,7 +20,7 @@ class FixedPoint extends NumericalMethod {
         super()
         this.parsedFunctionFx = parsedFunctionFx
         this.parsedFunctionGx = parsedFunctionGx
-        this.fixedPointIterations = fixedPointIterations
+        this.iterations = fixedPointIterations
         this.precision = precision
         this.root = {x: fixedPointIterations[fixedPointIterations.length - 1].x, fx: fixedPointIterations[fixedPointIterations.length - 1].fx}
     }
@@ -79,3 +79,4 @@ class FixedPoint extends NumericalMethod {
 }
 
 export default FixedPoint
+export {FixedPointIteration}
