@@ -1,24 +1,14 @@
-# numeric_methods
+# Numerical methods
 
-## Project setup
+[![Deploy vue page](https://github.com/elyse0/numerical-methods/actions/workflows/deploy-vue.yml/badge.svg)](https://github.com/elyse0/numerical-methods/actions/workflows/deploy-vue.yml)
+
+
+### Development setup
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Production build
 ```
 npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
