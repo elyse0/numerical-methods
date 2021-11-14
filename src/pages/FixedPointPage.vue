@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="column">
-        <vue-iframe src="/plot/fixed-point.html" @load="onLoadPlot"/>
+        <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
       </div>
     </div>
   </AppLayout>
@@ -76,6 +76,8 @@ export default class FixedPointPage extends Vue {
 
   selectedIteration: number = 1
   plot: Window | null = null
+
+  plotUrl = `${process.env.BASE_URL}/plot/fixed-point.html`
 
   get fixedPoint(): FixedPoint | null {
 

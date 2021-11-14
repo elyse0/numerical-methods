@@ -36,10 +36,7 @@
       </div>
 
       <div class="column">
-        <vue-iframe
-            src="/plot/plot.html"
-            @load="onLoadIframe"
-        />
+        <vue-iframe :src="plotUrl" @load="onLoadIframe"/>
       </div>
 
     </div>
@@ -69,6 +66,7 @@ export default class BisectionPage extends Vue {
 
   selectedIteration: number = 0
   myIframe: Window | null = null
+  plotUrl = `${process.env.BASE_URL}/plot/plot.html`
 
   get bisectionMethod(): Bisection | null {
 

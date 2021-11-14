@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="column">
-        <vue-iframe src="/plot/newton-raphson.html" @load="onLoadPlot"/>
+        <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
       </div>
     </div>
   </AppLayout>
@@ -59,6 +59,7 @@ export default class NewtonRaphsonPage extends Vue {
 
   selectedIteration: number = 1
   plot: Window | null = null
+  plotUrl = `${process.env.BASE_URL}/plot/newton-raphson.html`
 
   get newtonRaphson(): NewtonRaphson | null {
     return NewtonRaphson.create(this.inputFunctionFx, this.initialPoint)
