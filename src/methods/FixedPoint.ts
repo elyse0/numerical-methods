@@ -59,7 +59,7 @@ class FixedPoint extends NumericalMethod {
                 gx: functionValueGx
             }
 
-            if (FixedPoint.equal(fixedPointIteration.fx, 0)){
+            if (FixedPoint.isZero(fixedPointIteration.fx, precision)){
                 return [fixedPointIteration]
             }
 
