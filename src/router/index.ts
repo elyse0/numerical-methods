@@ -1,3 +1,5 @@
+import FixedPointPage from '@/pages/FixedPointPage.vue'
+import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 
@@ -17,6 +19,16 @@ const routes: Array<RouteConfig> = [
         path: '/bisection',
         name: 'BisectionPage',
         component: BisectionPage
+    },
+    {
+        path: '/fixed-point',
+        name: 'FixedPointPage',
+        component: FixedPointPage
+    },
+    {
+        path: '/newton-raphson',
+        name: 'NewtonRaphsonPage',
+        component: NewtonRaphsonPage
     },
     {
         path: '/least-squares',
