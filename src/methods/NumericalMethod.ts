@@ -5,6 +5,16 @@ interface Root {
     fx: number
 }
 
+interface Point {
+    x: number
+    y: number
+}
+
+interface IntegrationInterval {
+    x0: number
+    x1: number
+}
+
 abstract class NumericalMethod {
 
     static getParsedFunction(inputFunction: string): MathNode | null {
@@ -21,7 +31,7 @@ abstract class NumericalMethod {
             return null
         }
     }
-    
+
     static isValidFunction(mathFunction: EvalFunction, point: number = 1): boolean {
 
         try {
@@ -66,4 +76,4 @@ abstract class NumericalMethod {
 }
 
 export default NumericalMethod
-export {Root}
+export {Point, Root, IntegrationInterval}
