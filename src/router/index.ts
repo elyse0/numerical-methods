@@ -1,4 +1,5 @@
 import FixedPointPage from '@/pages/FixedPointPage.vue'
+import JacobiPage from '@/pages/JacobiPage.vue'
 import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
@@ -29,6 +30,11 @@ const routes: Array<RouteConfig> = [
         path: '/newton-raphson',
         name: 'NewtonRaphsonPage',
         component: NewtonRaphsonPage
+    },
+    {
+        path: '/jacobi',
+        name: 'JacobiPage',
+        component: JacobiPage
     },
     {
         path: '/least-squares',

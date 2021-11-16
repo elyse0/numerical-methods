@@ -16,9 +16,30 @@
                 type="is-link"
                 label="Método de Newton-Raphson"
       />
+      <b-button tag="router-link"
+                to="/jacobi"
+                type="is-link"
+                label="Jacobi"
+      />
+      <b-button tag="router-link"
+                to="/least-squares"
+                type="is-link"
+                label="Least squares"
+      />
     </div>
 
-    <AppMatrix></AppMatrix>
+    <div class="columns">
+      <div class="column">
+        <AppMatrix></AppMatrix>
+      </div>
+      <div class="column">
+
+      </div>
+      <div class="column">
+
+      </div>
+    </div>
+
   </div>
 </template>
 
