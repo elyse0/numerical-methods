@@ -8,6 +8,7 @@ import VueIframe from 'vue-iframes'
 import VueKatex from 'vue-katex';
 
 // Stylesheet
+import '@mdi/font/css/materialdesignicons.css'
 import 'buefy/dist/buefy.css'
 import 'katex/dist/katex.min.css';
 
