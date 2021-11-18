@@ -1,10 +1,21 @@
 <template>
   <div>
-    Lista
-    <div>
-      <b-field v-for="index in array.length" :key="index" style="padding-bottom: 10px">
-        <b-numberinput class="dropdown-number-input" :controls="false"
-                       v-model="array[index - 1]"
+    <b-field v-for="index in pointsArray.length" :key="index" style="padding-bottom: 10px">
+      <b-field>
+        <b-numberinput class="dropdown-number-input"
+                       icon="alpha-x-box"
+                       placeholder="x"
+                       :controls="false"
+                       v-model="pointsArray[index - 1].x"
+                       @keydown.native.space.prevent
+                       :use-html5-validation="false"
+        />
+        <b-numberinput icon="alpha-y-box"
+                       placeholder="y"
+                       :controls="false"
+                       v-model="pointsArray[index - 1].y"
+                       @keydown.native.space.prevent
+                       :use-html5-validation="false"
         />
         <p class="control">
           <b-button type="is-danger" icon-right="close" outlined
@@ -12,47 +23,59 @@
           />
         </p>
       </b-field>
+    </b-field>
 
-      <b-field style="opacity: 30%">
-        <b-numberinput placeholder="Agregar"
-                       :controls="false"
-                       @focus="addItem"
+    <b-field>
+      <p class="control">
+        <b-button type="is-success"
+                  icon-left="plus"
+                  label="Agregar punto"
+                  outlined
+                  @click="addItem"
         />
-        <p class="control">
-          <b-button type="is-success" icon-right="open" outlined/>
-        </p>
-      </b-field>
-
-    </div>
+      </p>
+    </b-field>
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from 'vue-property-decorator'
+import {Component, VModel, Vue} from 'vue-property-decorator'
+import {Point} from '@/methods/NumericalMethod'
 
 @Component
 export default class AppPointsList extends Vue {
 
-  array: number[] = [5, 3]
+  @VModel({default: null}) pointsArray!: Partial<Point>[] | null
 
   addItem() {
-    this.array.push(0)
+    if (!this.pointsArray) {
+      return
+    }
+    this.pointsArray.push({})
   }
 
   removeItem(item: number) {
-    const left = this.array.slice(0, item)
-    const right = this.array.slice(item + 1)
+    if (!this.pointsArray) {
+      return
+    }
 
-    this.array = left.concat(right)
+    const left = this.pointsArray.slice(0, item)
+    const right = this.pointsArray.slice(item + 1)
+
+    this.pointsArray = left.concat(right)
+    this.focusLastItem()
   }
 
-  @Watch("array")
-  onArray() {
+  focusLastItem() {
     setTimeout(() => {
       const inputs = document.querySelectorAll("div.b-numberinput input")
       // @ts-ignore
-      inputs[inputs.length - 2].focus()
+      inputs[inputs.length - 1].focus()
     }, 50)
+  }
+
+  mounted() {
+    this.pointsArray = [{x: 3, y: 2}, {x: 1, y: 0}]
   }
 }
 </script>
