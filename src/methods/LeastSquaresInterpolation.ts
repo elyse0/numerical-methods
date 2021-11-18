@@ -1,11 +1,7 @@
+import {Point} from '@/methods/NumericalMethod'
 import {sqrt} from 'mathjs'
 
-interface IPoint {
-    x: number,
-    y: number
-}
-
-interface ILeastSquaresInterpolation {
+interface LeastSquaresInterpolationResult {
     slope: number;
     yIntercept: number,
     correlationCoefficient: number
@@ -13,7 +9,30 @@ interface ILeastSquaresInterpolation {
 
 class LeastSquaresInterpolation {
 
-    public static method(points: IPoint[]): ILeastSquaresInterpolation {
+    public slope: number
+    public yIntercept: number
+    public correlationCoefficient: number
+
+    private constructor(slope: number, yIntercept: number, correlationCoefficient: number) {
+        this.slope = slope
+        this.yIntercept = yIntercept
+        this.correlationCoefficient = correlationCoefficient
+    }
+
+    public static create(points: Point[]): LeastSquaresInterpolation | null {
+        if (!points.length) {
+            console.log("LeastSquaresInterpolation: Points array is empty")
+            return null
+        }
+        const method = LeastSquaresInterpolation.method(points)
+        if (!method) {
+            console.log("LeastSquaresInterpolation: Method failed")
+            return null
+        }
+        return new LeastSquaresInterpolation(method.slope, method.yIntercept, method.correlationCoefficient)
+    }
+
+    public static method(points: Point[]): LeastSquaresInterpolationResult {
 
         const numberOfPoints = points.length
 
@@ -54,6 +73,7 @@ const points = [
 ]
 */
 
+/*
 const points = [
     {x: 178, y: 69.8},
     {x: 160, y: 67.5},
@@ -69,4 +89,4 @@ const points = [
     {x: 173, y: 68.4},
 ]
 
-LeastSquaresInterpolation.method(points)
+LeastSquaresInterpolation.method(points)*/
