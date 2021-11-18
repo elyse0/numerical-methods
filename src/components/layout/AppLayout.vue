@@ -1,5 +1,6 @@
 <template>
   <div class="layout">
+    <AppNavbar/>
     <div class="container is-fluid">
       <slot/>
     </div>
@@ -9,7 +10,12 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 
-@Component
+import AppNavbar from '@/components/layout/AppNavbar.vue'
+
+@Component({
+  components: {AppNavbar}
+})
+
 export default class AppLayout extends Vue {
 
 }
