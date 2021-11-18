@@ -11,19 +11,32 @@
 <script>
     const elt = document.getElementById('calculator')
     const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
-    let functionX = {id: "functionX", latex: "x", lineOpacity: 0.35, lineWidth: 1, color: "#7f7f7f"}
-    calculator.setExpression(functionX)
-    /*calculator.setExpression({id: "functionFx", latex: "x^2-2*x-3"})
-    calculator.setExpression({id: "functionGx", latex: "(2*x+3)^{1/2}"})*/
+    let functionFx = {id: "functionFx", latex: "", color: "#52c9dc"}
+
+    let table = {id: "table1", type: "table"}
 
     const receiveDataFromWeb =  (message) => {
 
-        /*if (message.data.functionFx !== undefined) {
+        console.log(message)
+
+        if (message.data.functionFx !== undefined) {
             functionFx.latex = message.data.functionFx
             calculator.setExpression(functionFx)
         } else {
             calculator.removeExpression(functionFx)
-        }*/
+        }
+
+        if (message.data.table !== undefined){
+            let columns = []
+            columns.push({latex: "x", values: message.data.table.x})
+            columns.push({latex: "y",
+                color: "#3ede34",
+                values: message.data.table.y})
+            table["columns"] = columns
+            calculator.setExpression(table)
+        } else {
+            calculator.removeExpression(table)
+        }
     }
 
     window.addEventListener("message", receiveDataFromWeb);
