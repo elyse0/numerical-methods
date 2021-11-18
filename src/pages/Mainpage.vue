@@ -1,16 +1,7 @@
 <template>
   <AppContentLayout>
 
-    <section class="hero">
-      <div class="hero-body">
-        <p class="title">
-          Métodos numéricos
-        </p>
-        <p class="subtitle">
-          FES Aragón 2022-I
-        </p>
-      </div>
-    </section>
+    <AppHero title="Métodos numéricos" subtitle="FES Aragón 2022-I"/>
 
     <footer class="footer">
       <div class="content has-text-centered">
@@ -24,11 +15,12 @@
 </template>
 
 <script lang="ts">
+import AppHero from '@/components/AppHero.vue'
 import AppMatrix from '@/components/AppMatrix.vue'
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import {Component, Vue} from 'vue-property-decorator'
 @Component({
-  components: {AppContentLayout, AppMatrix}
+  components: {AppHero, AppContentLayout, AppMatrix}
 })
 export default class Mainpage extends Vue {
 
