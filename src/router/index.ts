@@ -1,6 +1,7 @@
 import FixedPointPage from '@/pages/FixedPointPage.vue'
 import JacobiPage from '@/pages/JacobiPage.vue'
 import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
+import Page404 from '@/pages/Page404.vue'
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 
@@ -40,6 +41,11 @@ const routes: Array<RouteConfig> = [
         path: '/interpolation/least-squares',
         name: 'LeastSquaresPage',
         component: LeastSquaresPage
+    },
+    {
+        path: '*',
+        name: 'Page404',
+        component: Page404
     }
 ]
 
