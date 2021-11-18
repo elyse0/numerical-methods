@@ -1,5 +1,5 @@
 <template>
-  <AppLayout>
+  <AppContentLayout>
     <br>
     <div class="columns">
 
@@ -40,7 +40,7 @@
       </div>
 
     </div>
-  </AppLayout>
+  </AppContentLayout>
 </template>
 
 <script lang="ts">
@@ -49,13 +49,13 @@ import {Root} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
-import AppLayout from '@/components/layout/AppLayout.vue'
+import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import AppBisectionIterationButtons from '@/components/Bisection/AppBisectionIterationButtons.vue'
 
 import {Bisection, BisectionInitialPoints, BisectionIteration} from '@/methods/Bisection'
 
 @Component({
-  components: {AppNumberInput, AppLayout, AppBisectionIterationButtons}
+  components: {AppNumberInput, AppContentLayout, AppBisectionIterationButtons}
 })
 
 export default class BisectionPage extends Vue {

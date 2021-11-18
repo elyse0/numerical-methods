@@ -1,5 +1,5 @@
 <template>
-  <AppLayout>
+  <AppContentLayout>
     <br>
     <div class="columns">
       <div class="column">
@@ -50,7 +50,7 @@
         <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
       </div>
     </div>
-  </AppLayout>
+  </AppContentLayout>
 </template>
 
 <script lang="ts">
@@ -59,12 +59,11 @@ import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 import FixedPoint, {FixedPointIteration} from '@/methods/FixedPoint'
 
+import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
-import AppLayout from '@/components/layout/AppLayout.vue'
-
 @Component({
-  components: {AppLayout, AppNumberInput}
+  components: {AppContentLayout, AppNumberInput}
 })
 
 export default class FixedPointPage extends Vue {

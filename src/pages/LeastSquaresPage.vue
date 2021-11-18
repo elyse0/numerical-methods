@@ -1,5 +1,5 @@
 <template>
-  <AppLayout>
+  <AppContentLayout>
     <br>
     <div class="columns">
       <div class="column">
@@ -11,7 +11,7 @@
         <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
       </div>
     </div>
-  </AppLayout>
+  </AppContentLayout>
 </template>
 
 <script lang="ts">
@@ -20,10 +20,10 @@ import LeastSquaresInterpolation from '@/methods/LeastSquaresInterpolation'
 import {Point} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
-import AppLayout from '@/components/layout/AppLayout.vue'
+import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 
 @Component({
-  components: {AppPointsList, AppLayout}
+  components: {AppPointsList, AppContentLayout}
 })
 
 export default class LeastSquaresPage extends Vue {

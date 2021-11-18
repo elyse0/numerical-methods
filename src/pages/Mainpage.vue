@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <AppContentLayout>
     <div class="buttons">
       <b-button tag="router-link"
                 to="/bisection"
@@ -40,14 +40,15 @@
       </div>
     </div>
 
-  </div>
+  </AppContentLayout>
 </template>
 
 <script lang="ts">
 import AppMatrix from '@/components/AppMatrix.vue'
+import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import {Component, Vue} from 'vue-property-decorator'
 @Component({
-  components: {AppMatrix}
+  components: {AppContentLayout, AppMatrix}
 })
 export default class Mainpage extends Vue {
 

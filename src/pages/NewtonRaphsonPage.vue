@@ -1,5 +1,5 @@
 <template>
-  <AppLayout>
+  <AppContentLayout>
     <br>
     <div class="columns">
       <div class="column">
@@ -35,7 +35,7 @@
         <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
       </div>
     </div>
-  </AppLayout>
+  </AppContentLayout>
 </template>
 
 <script lang="ts">
@@ -44,11 +44,12 @@ import {Point, Root} from '@/methods/NumericalMethod'
 import {MathNode} from 'mathjs'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import NewtonRaphson, {NewtonRaphsonIterations} from '@/methods/NewtonRaphson'
-import AppLayout from '@/components/layout/AppLayout.vue'
+
+import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
 @Component({
-  components: {AppLayout, AppNumberInput}
+  components: {AppContentLayout, AppNumberInput}
 })
 
 export default class NewtonRaphsonPage extends Vue {

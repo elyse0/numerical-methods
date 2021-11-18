@@ -1,5 +1,5 @@
 <template>
-  <AppLayout>
+  <AppContentLayout>
 
     <div class="columns">
       <div class="column">
@@ -10,17 +10,17 @@
       </div>
     </div>
 
-  </AppLayout>
+  </AppContentLayout>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 
-import AppLayout from '@/components/layout/AppLayout.vue'
+import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import AppMatrix from '@/components/AppMatrix.vue'
 
 @Component({
-  components: {AppMatrix, AppLayout}
+  components: {AppMatrix, AppContentLayout}
 })
 
 export default class JacobiPage extends Vue {
