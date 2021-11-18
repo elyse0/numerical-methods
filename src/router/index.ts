@@ -17,27 +17,27 @@ const routes: Array<RouteConfig> = [
         component: Mainpage
     },
     {
-        path: '/bisection',
+        path: '/root-of-polynomials/bisection',
         name: 'BisectionPage',
         component: BisectionPage
     },
     {
-        path: '/fixed-point',
+        path: '/root-of-polynomials/fixed-point',
         name: 'FixedPointPage',
         component: FixedPointPage
     },
     {
-        path: '/newton-raphson',
+        path: '/root-of-polynomials/newton-raphson',
         name: 'NewtonRaphsonPage',
         component: NewtonRaphsonPage
     },
     {
-        path: '/jacobi',
+        path: '/linear-system/jacobi',
         name: 'JacobiPage',
         component: JacobiPage
     },
     {
-        path: '/least-squares',
+        path: '/interpolation/least-squares',
         name: 'LeastSquaresPage',
         component: LeastSquaresPage
     }
