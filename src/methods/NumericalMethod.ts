@@ -53,6 +53,11 @@ abstract class NumericalMethod {
         return evaluation
     }
 
+    static mean(numbers: number[]): number {
+
+        return mean(numbers)
+    }
+
     static round(number: number, precision: number = 4): number {
 
         return evaluate(number.toFixed(precision).toString())
