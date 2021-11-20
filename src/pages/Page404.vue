@@ -23,6 +23,6 @@ export default class Page404 extends Vue {
 
 <style scoped>
 img {
-  height: 90vh;
+  height: 85vh;
 }
 </style>
