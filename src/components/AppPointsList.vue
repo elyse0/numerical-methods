@@ -9,6 +9,7 @@
                        v-model="pointsArray[index - 1].x"
                        @keydown.native.space.prevent
                        :use-html5-validation="false"
+                       @input="update"
         />
         <b-numberinput icon="alpha-y-box"
                        placeholder="y"
@@ -16,6 +17,7 @@
                        v-model="pointsArray[index - 1].y"
                        @keydown.native.space.prevent
                        :use-html5-validation="false"
+                       @input="update"
         />
         <p class="control">
           <b-button type="is-danger" icon-right="close" outlined
@@ -40,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import {Component, VModel, Vue} from 'vue-property-decorator'
+import {Component, Emit, VModel, Vue} from 'vue-property-decorator'
 import {Point} from '@/methods/NumericalMethod'
 
 @Component
@@ -81,6 +83,11 @@ export default class AppPointsList extends Vue {
     }
 
     return this.pointsArray.length
+  }
+
+  @Emit()
+  update() {
+    return true
   }
 }
 </script>
