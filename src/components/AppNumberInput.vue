@@ -1,6 +1,11 @@
 <template>
   <b-field :label="label" :label-position="labelPosition">
-    <b-input type="number" v-model="stringNumber" :step="step" expanded/>
+    <b-numberinput v-model="stringNumber"
+                   :step="step"
+                   :min="min"
+                   :max="max"
+                   :controls="false"
+                   expanded/>
   </b-field>
 </template>
 
@@ -15,6 +20,8 @@ export default class AppNumberInput extends Vue {
   @Prop({required: true}) readonly label!: string
   @Prop({default: "inside"}) readonly labelPosition!: string
   @Prop({default: 0.0001}) readonly step!: number
+  @Prop({default: 0}) readonly min!: number
+  @Prop({default: Number.MAX_SAFE_INTEGER}) readonly max!: number
 
   stringNumber: string = "0"
 
@@ -34,6 +41,8 @@ export default class AppNumberInput extends Vue {
 }
 </script>
 
-<style scoped>
-
+<style>
+div.field.is-floating-in-label.has-numberinput > label {
+  margin-left: 0.2rem!important;
+}
 </style>
