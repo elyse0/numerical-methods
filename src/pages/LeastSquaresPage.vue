@@ -28,7 +28,7 @@ import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 
 export default class LeastSquaresPage extends Vue {
 
-  pointsList: Partial<Point>[] | null = null
+  pointsList: Partial<Point>[] = []
   selectedIteration: number = 1
   plot: Window | null = null
 
@@ -50,8 +50,7 @@ export default class LeastSquaresPage extends Vue {
     if (!this.pointsList) {
       return false
     }
-
-    return !this.pointsList.some((point) => !this.isPoint(point))
+    return LeastSquaresInterpolation.isPointsListValid(this.pointsList)
   }
 
   updatePlot() {
