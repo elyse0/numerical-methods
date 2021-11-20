@@ -41,25 +41,17 @@ export default class LinearInterpolationPage extends Vue {
   plotUrl = `${process.env.BASE_URL}/plot/least-squares.html`
 
   get linearInterpolation(): LinearInterpolation | null {
-    if (!this.isPointsListValid) {
-      return null
-    }
 
-    return LinearInterpolation.create(this.pointsList as Point[])
+    return this.isPointsListValid ? LinearInterpolation.create(this.pointsList as Point[]) : null
   }
 
   get interpolationLine(): string | null {
-    if (!this.linearInterpolation) {
-      return null
-    }
 
-    const point = this.linearInterpolation.point
-    const slope = this.linearInterpolation.slope
-
-    return LinearInterpolation.getLineEquationPointSlope(point, slope)
+    return this.linearInterpolation ? this.linearInterpolation.interpolationFunction : null
   }
 
   get isPointsListValid(): boolean {
+
     return LinearInterpolation.isPointsListValid(this.pointsList)
   }
 
