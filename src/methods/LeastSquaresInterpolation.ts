@@ -1,4 +1,4 @@
-import {Point} from '@/methods/NumericalMethod'
+import NumericalMethod, {Point} from '@/methods/NumericalMethod'
 import {sqrt} from 'mathjs'
 
 interface LeastSquaresInterpolationResult {
@@ -7,13 +7,14 @@ interface LeastSquaresInterpolationResult {
     correlationCoefficient: number
 }
 
-class LeastSquaresInterpolation {
+class LeastSquaresInterpolation extends NumericalMethod {
 
     public slope: number
     public yIntercept: number
     public correlationCoefficient: number
 
     private constructor(slope: number, yIntercept: number, correlationCoefficient: number) {
+        super()
         this.slope = slope
         this.yIntercept = yIntercept
         this.correlationCoefficient = correlationCoefficient
