@@ -2,6 +2,7 @@
   <AppLayout>
     <div class="content-layout">
       <main class="layout_main">
+        <br>
         <slot/>
       </main>
     </div>
