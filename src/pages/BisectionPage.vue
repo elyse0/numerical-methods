@@ -1,6 +1,7 @@
 <template>
   <AppContentLayout>
-    <br>
+    <AppHero title="Método de Bisección" :padding="1"></AppHero>
+
     <div class="columns">
 
       <div class="column">
@@ -44,6 +45,7 @@
 </template>
 
 <script lang="ts">
+import AppHero from '@/components/AppHero.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 import {Root} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
@@ -55,7 +57,7 @@ import AppBisectionIterationButtons from '@/components/Bisection/AppBisectionIte
 import {Bisection, BisectionInitialPoints, BisectionIteration} from '@/methods/Bisection'
 
 @Component({
-  components: {AppNumberInput, AppContentLayout, AppBisectionIterationButtons}
+  components: {AppHero, AppNumberInput, AppContentLayout, AppBisectionIterationButtons}
 })
 
 export default class BisectionPage extends Vue {
