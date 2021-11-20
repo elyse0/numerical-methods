@@ -1,5 +1,6 @@
 import FixedPointPage from '@/pages/FixedPointPage.vue'
 import JacobiPage from '@/pages/JacobiPage.vue'
+import LinearInterpolationPage from '@/pages/LinearInterpolationPage.vue'
 import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
 import Page404 from '@/pages/Page404.vue'
 import Vue from 'vue'
@@ -36,6 +37,11 @@ const routes: Array<RouteConfig> = [
         path: '/linear-system/jacobi',
         name: 'JacobiPage',
         component: JacobiPage
+    },
+    {
+        path: '/interpolation/linear',
+        name: 'LinearInterpolationPage',
+        component: LinearInterpolationPage
     },
     {
         path: '/interpolation/least-squares',
