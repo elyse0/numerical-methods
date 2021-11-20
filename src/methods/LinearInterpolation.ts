@@ -1,20 +1,22 @@
 import NumericalMethod, {Point} from '@/methods/NumericalMethod'
-import LinearInterpolationPage from '@/pages/LinearInterpolationPage.vue'
 
 interface LinearInterpolationResult {
     point: Point
     slope: number
+    interpolationFunction: string
 }
 
 class LinearInterpolation extends NumericalMethod {
 
     point: Point
     slope: number
+    interpolationFunction: string
 
-    private constructor(point: Point, slope: number) {
+    private constructor(point: Point, slope: number, interpolationFunction: string) {
         super()
         this.point = point
         this.slope = slope
+        this.interpolationFunction = interpolationFunction
     }
 
     public static create(points: Point[]): LinearInterpolation | null {
@@ -27,7 +29,7 @@ class LinearInterpolation extends NumericalMethod {
             console.log("LinearInterpolation: Method failed")
             return null
         }
-        return new LinearInterpolation(method.point, method.slope)
+        return new LinearInterpolation(method.point, method.slope, method.interpolationFunction)
     }
 
     public static method(points: Point[]): LinearInterpolationResult | null {
@@ -40,13 +42,14 @@ class LinearInterpolation extends NumericalMethod {
 
         console.log(slopesBetweenPoints)
 
-        return {
-            point: {
-                x: LinearInterpolation.mean(points.map(point => point.x)),
-                y: LinearInterpolation.mean(points.map(point => point.y))
-            },
-            slope: LinearInterpolation.mean(slopesBetweenPoints)
+        const point = {
+            x: LinearInterpolation.mean(points.map(point => point.x)),
+            y: LinearInterpolation.mean(points.map(point => point.y))
         }
+        const slope = LinearInterpolation.mean(slopesBetweenPoints)
+        const interpolationFunction = LinearInterpolation.getLineEquationPointSlope(point, slope)
+
+        return {point, slope, interpolationFunction}
     }
 
     public static getSlopesBetweenPoints(points: Point[]): number[] {
