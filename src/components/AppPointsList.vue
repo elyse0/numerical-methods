@@ -35,6 +35,7 @@
         />
       </p>
     </b-field>
+    <div v-show="false">{{pointsArrayLength}}</div>
   </div>
 </template>
 
@@ -45,7 +46,7 @@ import {Point} from '@/methods/NumericalMethod'
 @Component
 export default class AppPointsList extends Vue {
 
-  @VModel({default: null}) pointsArray!: Partial<Point>[] | null
+  @VModel({default: () => [{}]}) pointsArray!: Partial<Point>[]
 
   addItem() {
     if (!this.pointsArray) {
@@ -74,8 +75,12 @@ export default class AppPointsList extends Vue {
     }, 50)
   }
 
-  mounted() {
-    this.pointsArray = [{x: 3, y: 2}, {x: 1, y: 0}]
+  get pointsArrayLength(): number {
+    if (!this.pointsArray.length) {
+      this.addItem()
+    }
+
+    return this.pointsArray.length
   }
 }
 </script>
