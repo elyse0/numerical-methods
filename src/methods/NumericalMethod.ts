@@ -1,4 +1,4 @@
-import {EvalFunction, evaluate, MathNode, parse} from "mathjs"
+import {EvalFunction, evaluate, MathNode, mean, parse, simplify, std} from "mathjs"
 
 interface Root {
     x: number,
@@ -13,6 +13,11 @@ interface Point {
 interface IntegrationInterval {
     x0: number
     x1: number
+}
+
+enum Sign {
+    positive = "+",
+    negative = "-"
 }
 
 abstract class NumericalMethod {
@@ -91,6 +96,44 @@ abstract class NumericalMethod {
         const possibleRoot = mathFunction.evaluate({x: number})
         return this.isZero(possibleRoot, precision)
     }
+
+    static isPoint(point: Partial<Point>): point is Point {
+        return typeof point.x === 'number' && typeof point.y === "number"
+    }
+
+    static isPointsListValid(pointsList: Partial<Point>[]): boolean {
+        if (!pointsList.length) {
+            return false
+        }
+
+        return !pointsList.some((point) => !this.isPoint(point))
+    }
+
+    static getNumberStringMultipliedBySign(number: number, sign: Sign, precision: number = 4): string {
+
+        if (sign === Sign.positive) {
+            return number < 0 ? `-${number.toPrecision(precision)}` : `+${number.toPrecision(precision)}`
+        } else {
+            return number < 0 ? `+${number.toPrecision(precision)}` : `-${number.toPrecision(precision)}`
+        }
+    }
+
+    static getFxEquation(rightHandSide: string, useFractions: boolean = false): string {
+
+        const equation = simplify(rightHandSide, {}, {exactFractions: useFractions}).toTex()
+        return `f(x)=${equation}`
+    }
+
+    static getLineEquationPointSlope(point: Point, slope: number, precision: number = 4): string {
+        const x = point.x
+        const y = point.y
+
+        const xWithSign = this.getNumberStringMultipliedBySign(x, Sign.negative, precision)
+        const yWithSign = this.getNumberStringMultipliedBySign(y, Sign.positive, precision)
+
+        return this.getFxEquation(`${slope.toFixed(precision)}*(x${xWithSign})${yWithSign}`)
+    }
+
 }
 
 export default NumericalMethod
