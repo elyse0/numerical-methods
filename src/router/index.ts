@@ -5,6 +5,7 @@ import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
 import Page404 from '@/pages/Page404.vue'
 import QuadraticInterpolationPage from '@/pages/QuadraticInterpolationPage.vue'
 import RungeKuttaPage from '@/pages/RungeKuttaPage.vue'
+import SimpsonIntegrationPage from '@/pages/SimpsonIntegrationPage.vue'
 import TrapezoidalIntegrationPage from '@/pages/TrapezoidalIntegrationPage.vue'
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
@@ -60,6 +61,12 @@ const routes: Array<RouteConfig> = [
         path: '/integration/trapezoidal',
         name: 'TrapezoidalIntegrationPage',
         component: TrapezoidalIntegrationPage
+    },
+
+    {
+        path: '/integration/simpson-1-3',
+        name: 'SimpsonIntegrationPage',
+        component: SimpsonIntegrationPage
     },
     {
         path: '/ode/runge-kutta',
