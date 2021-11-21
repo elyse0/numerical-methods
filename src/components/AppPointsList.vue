@@ -27,7 +27,7 @@
       </b-field>
     </b-field>
 
-    <b-field>
+    <b-field v-if="showButton">
       <p class="control">
         <b-button type="is-success"
                   icon-left="plus"
@@ -42,13 +42,14 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, VModel, Vue} from 'vue-property-decorator'
+import {Component, Emit, Prop, VModel, Vue} from 'vue-property-decorator'
 import {Point} from '@/methods/NumericalMethod'
 
 @Component
 export default class AppPointsList extends Vue {
 
   @VModel({default: () => [{}]}) pointsArray!: Partial<Point>[]
+  @Prop({default: true}) showButton!: boolean
 
   addItem() {
     if (!this.pointsArray) {
