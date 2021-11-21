@@ -3,6 +3,7 @@ import JacobiPage from '@/pages/JacobiPage.vue'
 import LinearInterpolationPage from '@/pages/LinearInterpolationPage.vue'
 import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
 import Page404 from '@/pages/Page404.vue'
+import QuadraticInterpolationPage from '@/pages/QuadraticInterpolationPage.vue'
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 
@@ -42,6 +43,11 @@ const routes: Array<RouteConfig> = [
         path: '/interpolation/linear',
         name: 'LinearInterpolationPage',
         component: LinearInterpolationPage
+    },
+    {
+        path: '/interpolation/quadratic',
+        name: 'QuadraticInterpolationPage',
+        component: QuadraticInterpolationPage
     },
     {
         path: '/interpolation/least-squares',
