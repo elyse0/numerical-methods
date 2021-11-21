@@ -4,6 +4,7 @@ import LinearInterpolationPage from '@/pages/LinearInterpolationPage.vue'
 import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
 import Page404 from '@/pages/Page404.vue'
 import QuadraticInterpolationPage from '@/pages/QuadraticInterpolationPage.vue'
+import RungeKuttaPage from '@/pages/RungeKuttaPage.vue'
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 
@@ -53,6 +54,11 @@ const routes: Array<RouteConfig> = [
         path: '/interpolation/least-squares',
         name: 'LeastSquaresPage',
         component: LeastSquaresPage
+    },
+    {
+        path: '/ode/runge-kutta',
+        name: 'RungeKuttaPage',
+        component: RungeKuttaPage
     },
     {
         path: '*',

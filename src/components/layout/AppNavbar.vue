@@ -40,6 +40,12 @@
         </b-navbar-dropdown>
       </b-navbar-item>
 
+      <b-navbar-item>
+        <b-navbar-dropdown label="EDO">
+          <b-navbar-item tag="router-link" :to="{ path: '/ode/runge-kutta' }">Runge-Kutta</b-navbar-item>
+        </b-navbar-dropdown>
+      </b-navbar-item>
+
     </template>
 
     <template #end>
