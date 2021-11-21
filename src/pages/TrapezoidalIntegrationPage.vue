@@ -2,7 +2,11 @@
   <AppContentLayout>
     <div class="columns">
       <div class="column">
-
+        <div v-if="trapezoidalIntegration">
+          <katex-element :expression="trapezoidalIntegration.integralFunction"/>
+          {{trapezoidalIntegration.integral}}
+        </div>
+        <b-button @click="updatePlot">Click me</b-button>
       </div>
 
       <div class="column">
@@ -27,7 +31,12 @@ export default class TrapezoidalIntegrationPage extends Vue {
 
 
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/least-squares.html`
+  plotUrl = `${process.env.BASE_URL}/plot/integration.html`
+
+  get trapezoidalIntegration(): TrapezoidalIntegration | null {
+
+    return TrapezoidalIntegration.create("x^2+3", {x0: 0, x1: 3}, 6)
+  }
 
   updatePlot() {
     if (!this.plot) {
@@ -35,6 +44,11 @@ export default class TrapezoidalIntegrationPage extends Vue {
     }
 
     let message: any = {}
+    if (this.trapezoidalIntegration) {
+      message["functionFx"] = this.trapezoidalIntegration.functionFx
+      message["integral"] = this.trapezoidalIntegration.integralFunction
+      message["integrationInterval"] = this.trapezoidalIntegration.integrationInterval
+    }
     this.plot.postMessage(message, "*")
   }
 
@@ -43,16 +57,6 @@ export default class TrapezoidalIntegrationPage extends Vue {
 
     if (window)
       this.plot = window
-  }
-
-  mounted() {
-
-    const inputFunction = "1/(x^2+16)"
-    const parsedFunction = TrapezoidalIntegration.getParsedFunction(inputFunction)
-
-    if (parsedFunction) {
-      TrapezoidalIntegration.method(parsedFunction.compile(), {x0: 0, x1: 3}, 6)
-    }
   }
 
 }
