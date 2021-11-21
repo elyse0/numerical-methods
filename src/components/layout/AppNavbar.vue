@@ -35,8 +35,8 @@
       <b-navbar-item>
         <b-navbar-dropdown label="Integración">
           <b-navbar-item tag="router-link" :to="{ path: '/integration/trapezoidal' }">Integración Trapezoidal</b-navbar-item>
-          <b-navbar-item tag="router-link" :to="{ path: '/integration/simpson-3-8' }">Integración Simpson 3/8</b-navbar-item>
           <b-navbar-item tag="router-link" :to="{ path: '/integration/simpson-1-3' }">Integración Simpson 1/3</b-navbar-item>
+          <b-navbar-item tag="router-link" :to="{ path: '/integration/simpson-3-8' }">Integración Simpson 3/8</b-navbar-item>
         </b-navbar-dropdown>
       </b-navbar-item>
 
