@@ -76,6 +76,11 @@ abstract class NumericalMethod {
         return mean(numbers)
     }
 
+    static sum(numbers: number[]) : number {
+
+        return numbers.reduce((a, b) => a + b, 0)
+    }
+
     static round(number: number, precision: number = 4): number {
 
         return evaluate(number.toFixed(precision).toString())
