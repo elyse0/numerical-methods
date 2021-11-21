@@ -109,10 +109,10 @@ abstract class NumericalMethod {
         return !pointsList.some((point) => !this.isPoint(point))
     }
 
-    static getNumberStringMultipliedBySign(number: number, sign: Sign, precision: number = 4): string {
+    static getNumberStringMultipliedBySign(number: number, sign: Sign = Sign.positive, precision: number = 4): string {
 
         if (sign === Sign.positive) {
-            return number < 0 ? `-${number.toPrecision(precision)}` : `+${number.toPrecision(precision)}`
+            return number < 0 ? `${number.toPrecision(precision)}` : `+${number.toPrecision(precision)}`
         } else {
             return number < 0 ? `+${number.toPrecision(precision)}` : `-${number.toPrecision(precision)}`
         }
