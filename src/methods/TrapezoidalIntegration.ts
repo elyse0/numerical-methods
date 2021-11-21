@@ -6,7 +6,7 @@ class TrapezoidalIntegration extends NumericalMethod {
 
     static method(functionFx: EvalFunction, interval: IntegrationInterval, steps: number): number | null {
         const a = interval.x0
-        const b = interval.x0
+        const b = interval.x1
         const subintervalWidth = (a + b) / steps
 
         const xValues: number[] = []
@@ -16,7 +16,7 @@ class TrapezoidalIntegration extends NumericalMethod {
         const fxiValues: number[] = xValues.map((x) => this.evaluate(functionFx, x))
 
         const fxa = this.evaluate(functionFx, a)
-        const fxb = this.evaluate(functionFx, a)
+        const fxb = this.evaluate(functionFx, b)
         const sumFxi = 2 * this.sum(fxiValues)
 
         return (subintervalWidth / 2) * (fxa + sumFxi + fxb)
