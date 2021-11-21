@@ -129,6 +129,22 @@ abstract class NumericalMethod {
         return `f(x)=${equation}`
     }
 
+    static getFxIntegral(rightHandSide: string, integrationInterval: IntegrationInterval, useFractions: boolean = false): string {
+
+        const a = integrationInterval.x0
+        const b = integrationInterval.x1
+        const equation = simplify(rightHandSide, {}, {exactFractions: useFractions}).toTex()
+
+        return `\\int_{${a}}^{${b}}(${equation})dx`
+    }
+
+    static getIntegrationIntervalString(integrationInterval: IntegrationInterval): string {
+        const a = integrationInterval.x0
+        const b = integrationInterval.x1
+        const integralIntervalBoilerplate = `\\min\\left(0,f\\left(x\\right)\\right)\\le y\\le\\max\\left(0,f\\left(x\\right)\\right)`
+        return  integralIntervalBoilerplate + `\\left\\{${a}\\le x\\le ${b}\\right\\}`
+    }
+
     static getLineEquationPointSlope(point: Point, slope: number, precision: number = 4): string {
         const x = point.x
         const y = point.y
