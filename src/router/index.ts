@@ -5,6 +5,7 @@ import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
 import Page404 from '@/pages/Page404.vue'
 import QuadraticInterpolationPage from '@/pages/QuadraticInterpolationPage.vue'
 import RungeKuttaPage from '@/pages/RungeKuttaPage.vue'
+import TrapezoidalIntegrationPage from '@/pages/TrapezoidalIntegrationPage.vue'
 import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 
@@ -54,6 +55,11 @@ const routes: Array<RouteConfig> = [
         path: '/interpolation/least-squares',
         name: 'LeastSquaresPage',
         component: LeastSquaresPage
+    },
+    {
+        path: '/integration/trapezoidal',
+        name: 'TrapezoidalIntegrationPage',
+        component: TrapezoidalIntegrationPage
     },
     {
         path: '/ode/runge-kutta',
