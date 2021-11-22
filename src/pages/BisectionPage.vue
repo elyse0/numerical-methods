@@ -18,12 +18,12 @@
         </b-field>
 
         <div v-if="parsedFunction" class="has-text-centered" style="padding-bottom: 10px">
-          <katex-element :expression="'f(x)='+parsedFunction.toTex()"/>
+          <AppLatexFunction :input-function="this.inputFunction" fx/>
         </div>
 
         <div v-if="bisectionMethod && isIntervalValid" class="container has-text-centered" >
           <div style="padding-bottom: 10px">
-            <katex-element :expression="'f('+root.x + ') = ' + root.fx"/>
+            <AppLatexFunction :input-function="this.root.fx.toString()" :x="root.x.toString()" fx/>
           </div>
 
           <b-field :label="'Iteración ' + (this.selectedIteration) + '/' + (this.bisectionMethod.bisectionIterations.length)"
@@ -51,6 +51,7 @@ import {MathNode} from 'mathjs'
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
+import AppLatexFunction from '@/components/AppLatexFunction.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 import AppBisectionIterationButtons from '@/components/Bisection/AppBisectionIterationButtons.vue'
 
@@ -58,7 +59,7 @@ import {Bisection, BisectionInitialPoints, BisectionIteration} from '@/methods/B
 import {Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentLayout, AppHero, AppPlot, AppNumberInput, AppBisectionIterationButtons}
+  components: {AppContentLayout, AppHero, AppPlot, AppLatexFunction, AppNumberInput, AppBisectionIterationButtons}
 })
 
 export default class BisectionPage extends Vue {
@@ -72,10 +73,7 @@ export default class BisectionPage extends Vue {
 
   get bisectionMethod(): Bisection | null {
 
-    if (this.parsedFunction && this.isIntervalValid)
-      return Bisection.create(this.inputFunction, this.initialPoints, this.precision)
-
-    return null
+    return Bisection.create(this.inputFunction, this.initialPoints, this.precision)
   }
 
   get root(): Root | null {
