@@ -53,7 +53,6 @@ export default class TaylorSeriesPage extends Vue {
   selectedIteration: number = 1
 
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/taylor-series.html`
 
   get taylorSeries(): TaylorSeries | null {
     return TaylorSeries.create("e^x", this.iterations)
