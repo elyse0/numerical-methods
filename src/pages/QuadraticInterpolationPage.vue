@@ -14,7 +14,7 @@
       </div>
 
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadIframe"/>
+        <AppPlot name="least-squares" v-model="plot"/>
       </div>
     </div>
   </AppContentLayout>
@@ -24,14 +24,14 @@
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppPlot from '@/components/AppPlot.vue'
 import AppPointsList from '@/components/AppPointsList.vue'
 
 import QuadraticInterpolation from '@/methods/QuadraticInterpolation'
 import {Point} from '@/methods/NumericalMethod'
 
-
 @Component({
-  components: {AppPointsList, AppContentLayout}
+  components: {AppPlot, AppPointsList, AppContentLayout}
 })
 
 export default class QuadraticInterpolationPage extends Vue {
@@ -39,7 +39,6 @@ export default class QuadraticInterpolationPage extends Vue {
   pointsList: Partial<Point>[] = [{x: 0, y: -3}, {x: 1, y: 0}, {x: 3, y: 0}]
 
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/least-squares.html`
 
   get quadraticInterpolation(): QuadraticInterpolation | null {
 
@@ -76,13 +75,6 @@ export default class QuadraticInterpolationPage extends Vue {
     }
 
     this.plot.postMessage(message, "*")
-  }
-
-  onLoadIframe(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
   }
 
   @Watch("linearInterpolation")
