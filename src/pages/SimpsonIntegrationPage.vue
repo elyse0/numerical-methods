@@ -11,7 +11,7 @@
       </div>
 
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadIframe"/>
+        <AppPlot name="integration" v-model="plot"/>
       </div>
     </div>
   </AppContentLayout>
@@ -21,17 +21,17 @@
 import {Component, Vue} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppPlot from '@/components/AppPlot.vue'
 
 import SimpsonIntegration from '@/methods/SimpsonIntegration'
 
 @Component({
-  components: {AppContentLayout}
+  components: {AppContentLayout, AppPlot}
 })
 
 export default class SimpsonIntegrationPage extends Vue {
 
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/integration.html`
 
   get simpsonIntegration(): SimpsonIntegration | null {
 
@@ -50,13 +50,6 @@ export default class SimpsonIntegrationPage extends Vue {
       message["integrationInterval"] = this.simpsonIntegration.integrationInterval
     }
     this.plot.postMessage(message, "*")
-  }
-
-  onLoadIframe(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
   }
 
 }
