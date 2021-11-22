@@ -1,4 +1,4 @@
-import {EvalFunction, evaluate, MathNode, mean, parse, simplify, std} from "mathjs"
+import {EvalFunction, evaluate, factorial, MathNode, mean, parse, simplify, std} from "mathjs"
 
 interface Root {
     x: number,
@@ -89,6 +89,11 @@ abstract class NumericalMethod {
     static equal(a: number, b: number, precision: number = 4): boolean {
 
         return this.round(a, precision) === this.round(b, precision)
+    }
+
+    static factorial(number: number): number {
+
+        return factorial(number)
     }
 
     static isZero(number: number, precision: number = 4): boolean {
