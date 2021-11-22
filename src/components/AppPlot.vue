@@ -25,6 +25,8 @@ export default class AppPlot extends Vue {
 }
 </script>
 
-<style scoped>
-
+<style>
+iframe {
+  height: 600px !important;
+}
 </style>
