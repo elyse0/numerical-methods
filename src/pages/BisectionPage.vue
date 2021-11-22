@@ -12,9 +12,9 @@
 
         <b>Intervalo [a, b] en donde encuentra la raiz</b>
         <b-field grouped>
-          <AppNumberInput label="a" v-model="initialPoints.p1"/>
-          <AppNumberInput label="b" v-model="initialPoints.p2"/>
-          <AppNumberInput label="Precisión" v-model="precision" step="1" :max="8"/>
+          <AppNumberInput label="a" v-model="initialPoints.p1" @input="updateGraph"/>
+          <AppNumberInput label="b" v-model="initialPoints.p2" @input="updateGraph"/>
+          <AppNumberInput label="Precisión" v-model="precision" step="1" :max="8" @input="updateGraph"/>
         </b-field>
 
         <div v-if="parsedFunction" class="has-text-centered" style="padding-bottom: 10px">
@@ -142,15 +142,6 @@ export default class BisectionPage extends Vue {
     this.updateGraph()
   }
 
-  @Watch("initialPoints.p1")
-  onInitialPointsP1() {
-    this.updateGraph()
-  }
-
-  @Watch("initialPoints.p2")
-  onInitialPointsP2() {
-    this.updateGraph()
-  }
 }
 </script>
 
