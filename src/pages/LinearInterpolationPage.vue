@@ -14,23 +14,24 @@
       </div>
 
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadIframe"/>
+        <AppPlot name="least-squares" v-model="plot"></AppPlot>
       </div>
     </div>
   </AppContentLayout>
 </template>
 
 <script lang="ts">
-import {Point} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppPlot from '@/components/AppPlot.vue'
 import AppPointsList from '@/components/AppPointsList.vue'
 
 import LinearInterpolation from '@/methods/LinearInterpolation'
+import {Point} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppPointsList, AppContentLayout}
+  components: {AppPlot, AppPointsList, AppContentLayout}
 })
 
 export default class LinearInterpolationPage extends Vue {
@@ -38,7 +39,6 @@ export default class LinearInterpolationPage extends Vue {
   pointsList: Partial<Point>[] = [{}, {}]
 
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/least-squares.html`
 
   get linearInterpolation(): LinearInterpolation | null {
 
@@ -81,13 +81,6 @@ export default class LinearInterpolationPage extends Vue {
     }
 
     this.plot.postMessage(message, "*")
-  }
-
-  onLoadIframe(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
   }
 
   @Watch("linearInterpolation")
