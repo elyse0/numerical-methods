@@ -1,6 +1,6 @@
 <template>
   <b-field :label="label" :label-position="labelPosition">
-    <b-numberinput v-model="stringNumber"
+    <b-numberinput v-model="number"
                    :step="step"
                    :min="min"
                    :max="max"
@@ -10,12 +10,12 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, VModel, Vue, Watch} from 'vue-property-decorator'
+import {Component, Prop, VModel, Vue} from 'vue-property-decorator'
 
 @Component
 export default class AppNumberInput extends Vue {
 
-  @VModel() validatedNumber!: number
+  @VModel() number!: number
 
   @Prop({required: true}) readonly label!: string
   @Prop({default: "inside"}) readonly labelPosition!: string
@@ -23,21 +23,6 @@ export default class AppNumberInput extends Vue {
   @Prop({default: 0}) readonly min!: number
   @Prop({default: Number.MAX_SAFE_INTEGER}) readonly max!: number
 
-  stringNumber: string = "0"
-
-  validateNumber() {
-    this.validatedNumber = Number(this.stringNumber)
-  }
-
-  @Watch("stringNumber")
-  onStringNumber() {
-    this.validateNumber()
-  }
-
-  mounted() {
-    this.stringNumber = Number(this.validatedNumber).toString();
-    this.validateNumber()
-  }
 }
 </script>
 
