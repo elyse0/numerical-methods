@@ -13,8 +13,8 @@
         </b-field>
 
         <b-field grouped>
-          <AppNumberInput label="Punto inicial" v-model="initialPoint"/>
-          <AppNumberInput label="Precisión" v-model="precision" step="1"/>
+          <AppNumberInput label="Punto inicial" v-model="initialPoint" @input="updateGraph"/>
+          <AppNumberInput label="Precisión" v-model="precision" step="1" :min="1" :max="8" @input="updateGraph"/>
         </b-field>
 
         <div v-if="parsedFunctionFx" class="has-text-centered" style="padding-bottom: 10px">
@@ -192,10 +192,6 @@ export default class FixedPointPage extends Vue {
     this.updateGraph()
   }
 
-  @Watch("initialPoint")
-  onInitialPoint() {
-    this.updateGraph()
-  }
 }
 </script>
 
