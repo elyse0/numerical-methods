@@ -12,6 +12,7 @@ export default class AppLatexFunction extends Vue {
 
   @Prop({required: true, type: String}) readonly inputFunction!: string
   @Prop({default: false, type: Boolean}) readonly fx!: boolean
+  @Prop({default: null, type: String}) readonly x!: string | null
 
   get parsedFunction(): string {
     const parsedFunction = NumericalMethod.getParsedFunction(this.inputFunction)
@@ -19,7 +20,13 @@ export default class AppLatexFunction extends Vue {
       return ""
     }
     const parsedFunctionTex = parsedFunction.toTex()
-    return this.fx ? `f(x)=${parsedFunctionTex}` : parsedFunctionTex
+    if (!this.fx) {
+      return parsedFunctionTex
+    }
+    if (!this.x) {
+      return `f(x)=${parsedFunctionTex}`
+    }
+    return `f(${this.x})=${parsedFunctionTex}`
   }
 }
 </script>
