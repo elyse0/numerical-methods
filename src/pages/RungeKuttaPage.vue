@@ -6,7 +6,7 @@
       </div>
 
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadIframe"/>
+        <AppPlot name="least-squares" v-model="plot"/>
       </div>
     </div>
   </AppContentLayout>
@@ -16,19 +16,18 @@
 import {Component, Vue} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppPlot from '@/components/AppPlot.vue'
 import AppPointsList from '@/components/AppPointsList.vue'
 
 import RungeKutta from '@/methods/RungeKutta'
 
 @Component({
-  components: {AppPointsList, AppContentLayout}
+  components: {AppPlot, AppPointsList, AppContentLayout}
 })
 
 export default class RungeKuttaPage extends Vue {
 
-
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/least-squares.html`
 
   updatePlot() {
     if (!this.plot) {
@@ -37,13 +36,6 @@ export default class RungeKuttaPage extends Vue {
 
     let message: any = {}
     this.plot.postMessage(message, "*")
-  }
-
-  onLoadIframe(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
   }
 
   mounted() {
