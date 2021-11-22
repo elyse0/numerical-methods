@@ -21,8 +21,8 @@ export default class AppNumberInput extends Vue {
   @Prop({required: true}) readonly label!: string
   @Prop({default: "inside"}) readonly labelPosition!: string
   @Prop({default: 0.0001}) readonly step!: number
-  @Prop({default: 0}) readonly min!: number
-  @Prop({default: Number.MAX_SAFE_INTEGER}) readonly max!: number
+  @Prop({default: null}) readonly min!: number | null
+  @Prop({default: null}) readonly max!: number | null
 
   @Emit()
   input(value: number) {
