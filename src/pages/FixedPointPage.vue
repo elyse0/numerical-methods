@@ -47,23 +47,25 @@
         </div>
       </div>
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
+        <AppPlot name="fixed-point" v-model="plot"/>
       </div>
     </div>
   </AppContentLayout>
 </template>
 
 <script lang="ts">
-import {Point, Root} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
-import FixedPoint, {FixedPointIteration} from '@/methods/FixedPoint'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppPlot from '@/components/AppPlot.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
+import FixedPoint, {FixedPointIteration} from '@/methods/FixedPoint'
+import {Point, Root} from '@/methods/NumericalMethod'
+
 @Component({
-  components: {AppContentLayout, AppNumberInput}
+  components: {AppContentLayout, AppPlot, AppNumberInput}
 })
 
 export default class FixedPointPage extends Vue {
@@ -75,8 +77,6 @@ export default class FixedPointPage extends Vue {
 
   selectedIteration: number = 1
   plot: Window | null = null
-
-  plotUrl = `${process.env.BASE_URL}/plot/fixed-point.html`
 
   get fixedPoint(): FixedPoint | null {
 
@@ -175,13 +175,6 @@ export default class FixedPointPage extends Vue {
     ]
 
     return init.concat(getLinePatternIteration(fixedPointIterations))
-  }
-
-  onLoadPlot(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
   }
 
   @Watch("parsedFunctionFx")
