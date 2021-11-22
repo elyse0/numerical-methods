@@ -8,22 +8,24 @@
         {{isPointsListValid}}
       </div>
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
+        <AppPlot name="least-squares" v-model="plot"/>
       </div>
     </div>
   </AppContentLayout>
 </template>
 
 <script lang="ts">
-import AppPointsList from '@/components/AppPointsList.vue'
-import LeastSquaresInterpolation from '@/methods/LeastSquaresInterpolation'
-import {Point} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppPlot from '@/components/AppPlot.vue'
+import AppPointsList from '@/components/AppPointsList.vue'
+
+import LeastSquaresInterpolation from '@/methods/LeastSquaresInterpolation'
+import {Point} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppPointsList, AppContentLayout}
+  components: {AppContentLayout, AppPlot, AppPointsList}
 })
 
 export default class LeastSquaresPage extends Vue {
@@ -31,8 +33,6 @@ export default class LeastSquaresPage extends Vue {
   pointsList: Partial<Point>[] = []
   selectedIteration: number = 1
   plot: Window | null = null
-
-  plotUrl = `${process.env.BASE_URL}/plot/least-squares.html`
 
   isPoint(point: Partial<Point>): point is Point {
     return typeof point.x === 'number' && typeof point.y === "number"
@@ -83,13 +83,6 @@ export default class LeastSquaresPage extends Vue {
       message["functionFx"] = `f(x)=${slope.toFixed(4)}*x${yInterceptWithSign}`
     }
     this.plot.postMessage(message, "*")
-  }
-
-  onLoadPlot(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
   }
 
   @Watch("pointsList")
