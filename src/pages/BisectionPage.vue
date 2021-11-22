@@ -14,7 +14,7 @@
         <b-field grouped>
           <AppNumberInput label="a" v-model="initialPoints.p1" @input="updateGraph"/>
           <AppNumberInput label="b" v-model="initialPoints.p2" @input="updateGraph"/>
-          <AppNumberInput label="Precisión" v-model="precision" step="1" :max="8" @input="updateGraph"/>
+          <AppNumberInput label="Precisión" v-model="precision" step="1" :min="1" :max="8" @input="updateGraph"/>
         </b-field>
 
         <div v-if="parsedFunction" class="has-text-centered" style="padding-bottom: 10px">
