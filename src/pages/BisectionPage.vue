@@ -37,7 +37,7 @@
       </div>
 
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadIframe"/>
+        <AppPlot name="plot" v-model="plot"/>
       </div>
 
     </div>
@@ -45,19 +45,20 @@
 </template>
 
 <script lang="ts">
-import AppHero from '@/components/AppHero.vue'
-import AppNumberInput from '@/components/AppNumberInput.vue'
-import {Root} from '@/methods/NumericalMethod'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppHero from '@/components/AppHero.vue'
+import AppPlot from '@/components/AppPlot.vue'
+import AppNumberInput from '@/components/AppNumberInput.vue'
 import AppBisectionIterationButtons from '@/components/Bisection/AppBisectionIterationButtons.vue'
 
 import {Bisection, BisectionInitialPoints, BisectionIteration} from '@/methods/Bisection'
+import {Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppHero, AppNumberInput, AppContentLayout, AppBisectionIterationButtons}
+  components: {AppContentLayout, AppHero, AppPlot, AppNumberInput, AppBisectionIterationButtons}
 })
 
 export default class BisectionPage extends Vue {
@@ -67,8 +68,7 @@ export default class BisectionPage extends Vue {
   precision: number = 4
 
   selectedIteration: number = 0
-  myIframe: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/plot.html`
+  plot: Window | null = null
 
   get bisectionMethod(): Bisection | null {
 
@@ -106,15 +106,8 @@ export default class BisectionPage extends Vue {
     return Bisection.isIntervalValid(this.parsedFunction, this.initialPoints)
   }
 
-  onLoadIframe(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.myIframe = window
-  }
-
   updateGraph() {
-    if (!this.myIframe)
+    if (!this.plot)
       return
 
     const message: any = {}
@@ -131,7 +124,7 @@ export default class BisectionPage extends Vue {
       message["p3"] = this.currentIteration.p3
     }
 
-    this.myIframe.postMessage(message, "*")
+    this.plot.postMessage(message, "*")
   }
 
   @Watch("parsedFunction")
