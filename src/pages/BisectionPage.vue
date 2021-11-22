@@ -155,7 +155,5 @@ export default class BisectionPage extends Vue {
 </script>
 
 <style>
-iframe {
-  height: 600px !important;
-}
+
 </style>
