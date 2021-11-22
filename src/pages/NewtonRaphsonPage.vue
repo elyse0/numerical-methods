@@ -32,24 +32,25 @@
         </div>
       </div>
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadPlot"/>
+        <AppPlot name="newton-raphson" v-model="plot"/>
       </div>
     </div>
   </AppContentLayout>
 </template>
 
 <script lang="ts">
-import FixedPoint from '@/methods/FixedPoint'
-import {Point, Root} from '@/methods/NumericalMethod'
-import {MathNode} from 'mathjs'
 import {Component, Vue, Watch} from 'vue-property-decorator'
-import NewtonRaphson, {NewtonRaphsonIterations} from '@/methods/NewtonRaphson'
+import {MathNode} from 'mathjs'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppPlot from '@/components/AppPlot.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
+import NewtonRaphson, {NewtonRaphsonIterations} from '@/methods/NewtonRaphson'
+import {Point, Root} from '@/methods/NumericalMethod'
+
 @Component({
-  components: {AppContentLayout, AppNumberInput}
+  components: {AppPlot, AppContentLayout, AppNumberInput}
 })
 
 export default class NewtonRaphsonPage extends Vue {
@@ -60,7 +61,6 @@ export default class NewtonRaphsonPage extends Vue {
 
   selectedIteration: number = 1
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/newton-raphson.html`
 
   get newtonRaphson(): NewtonRaphson | null {
     return NewtonRaphson.create(this.inputFunctionFx, this.initialPoint)
@@ -100,7 +100,7 @@ export default class NewtonRaphsonPage extends Vue {
   }
 
   get parsedFunctionFx(): MathNode | null {
-    return FixedPoint.getParsedFunction(this.inputFunctionFx)
+    return NewtonRaphson.getParsedFunction(this.inputFunctionFx)
   }
 
   get linePattern(): Point[] | null {
@@ -137,14 +137,6 @@ export default class NewtonRaphsonPage extends Vue {
 
     this.plot.postMessage(message, "*")
   }
-
-  onLoadPlot(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
-  }
-
 
   @Watch("parsedFunctionFx")
   onParsedFunctionFx() {
