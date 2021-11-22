@@ -26,21 +26,23 @@
       </div>
 
       <div class="column">
-        <vue-iframe :src="plotUrl" @load="onLoadIframe"/>
+        <AppPlot name="taylor-series" v-model="plot"/>
       </div>
     </div>
   </AppContentLayout>
 </template>
 
 <script lang="ts">
-import TaylorSeries from '@/methods/TaylorSeries'
 import {Component, Vue, Watch} from 'vue-property-decorator'
+
+import TaylorSeries from '@/methods/TaylorSeries'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
+import AppPlot from '@/components/AppPlot.vue'
 
 @Component({
-  components: {AppContentLayout, AppNumberInput}
+  components: {AppContentLayout, AppNumberInput, AppPlot}
 })
 
 export default class TaylorSeriesPage extends Vue {
@@ -81,13 +83,6 @@ export default class TaylorSeriesPage extends Vue {
       message["approximationFx"] = this.approximationSum
     }
     this.plot.postMessage(message, "*")
-  }
-
-  onLoadIframe(frame: HTMLFrameElement) {
-    const window = frame.contentWindow
-
-    if (window)
-      this.plot = window
   }
 
   @Watch("taylorSeries")
