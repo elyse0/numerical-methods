@@ -5,12 +5,13 @@
                    :min="min"
                    :max="max"
                    :controls="false"
+                   @input="input"
                    expanded/>
   </b-field>
 </template>
 
 <script lang="ts">
-import {Component, Prop, VModel, Vue} from 'vue-property-decorator'
+import {Component, Emit, Prop, VModel, Vue} from 'vue-property-decorator'
 
 @Component
 export default class AppNumberInput extends Vue {
@@ -23,6 +24,10 @@ export default class AppNumberInput extends Vue {
   @Prop({default: 0}) readonly min!: number
   @Prop({default: Number.MAX_SAFE_INTEGER}) readonly max!: number
 
+  @Emit()
+  input(value: number) {
+    return value
+  }
 }
 </script>
 
