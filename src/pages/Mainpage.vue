@@ -15,13 +15,15 @@
 </template>
 
 <script lang="ts">
-import AppHero from '@/components/AppHero.vue'
-import AppMatrix from '@/components/AppMatrix.vue'
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import {Component, Vue} from 'vue-property-decorator'
+
+import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppHero from '@/components/AppHero.vue'
+
 @Component({
-  components: {AppHero, AppContentLayout, AppMatrix}
+  components: {AppHero, AppContentLayout}
 })
+
 export default class Mainpage extends Vue {
 
 }
