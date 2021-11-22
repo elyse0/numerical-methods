@@ -2,7 +2,12 @@
   <AppContentLayout>
     <div class="columns">
       <div class="column">
-
+        <div v-if="simpsonIntegration">
+          Type: {{simpsonIntegration.type}}
+          <katex-element :expression="simpsonIntegration.integralFunction"/>
+          {{simpsonIntegration.integral}}
+          <b-button @click="updatePlot">Click me</b-button>
+        </div>
       </div>
 
       <div class="column">
@@ -13,10 +18,11 @@
 </template>
 
 <script lang="ts">
-import SimpsonIntegration from '@/methods/SimpsonIntegration'
 import {Component, Vue} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+
+import SimpsonIntegration from '@/methods/SimpsonIntegration'
 
 @Component({
   components: {AppContentLayout}
@@ -25,22 +31,32 @@ import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 export default class SimpsonIntegrationPage extends Vue {
 
   plot: Window | null = null
-  plotUrl = `${process.env.BASE_URL}/plot/least-squares.html`
+  plotUrl = `${process.env.BASE_URL}/plot/integration.html`
+
+  get simpsonIntegration(): SimpsonIntegration | null {
+
+    return SimpsonIntegration.create("1/(1+x)", {x0: 0, x1: 1}, 6)
+  }
+
+  updatePlot() {
+    if (!this.plot) {
+      return
+    }
+
+    let message: any = {}
+    if (this.simpsonIntegration) {
+      message["functionFx"] = this.simpsonIntegration.functionFx
+      message["integral"] = this.simpsonIntegration.integralFunction
+      message["integrationInterval"] = this.simpsonIntegration.integrationInterval
+    }
+    this.plot.postMessage(message, "*")
+  }
 
   onLoadIframe(frame: HTMLFrameElement) {
     const window = frame.contentWindow
 
     if (window)
       this.plot = window
-  }
-
-  mounted() {
-    const inputFunction = "1/(1+x)"
-    const parsedFunction = SimpsonIntegration.getParsedFunction(inputFunction)
-
-    if (parsedFunction) {
-      console.log(SimpsonIntegration.OneThirdMethod(parsedFunction.compile(), {x0: 0, x1: 1}, 6))
-    }
   }
 
 }
