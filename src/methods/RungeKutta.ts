@@ -21,13 +21,17 @@ class RungeKutta extends NumericalMethod {
 
     public static create(
         differentialEquation: string,
-        initialConditions: Point,
+        initialConditions: Partial<Point>,
         step: number,
         iteration: number = 10
     ): RungeKutta | null {
         const parsedDifferentialEquation = RungeKutta.getParsedFunction(differentialEquation)
         if (!parsedDifferentialEquation) {
             console.log("Error parsing Differential equation")
+            return null
+        }
+        if (!this.isPoint(initialConditions)) {
+            console.log("RungeKutta: Initial conditions are invalid")
             return null
         }
         const iterations = RungeKutta.method(
