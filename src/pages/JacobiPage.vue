@@ -1,28 +1,31 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Método de Jacobi" :padding="1"/>
-    <div class="columns">
-      <div class="column">
-        <AppMatrix></AppMatrix>
-      </div>
-      <div class="column">
-        <AppPlot name="jacobi" v-model="plot"/>
-      </div>
-    </div>
+  <AppContentAndPlot>
 
-  </AppContentLayout>
+    <template #header>
+      <AppHero title="Método de Jacobi" :padding="1"/>
+    </template>
+
+    <template #content>
+      <AppMatrix/>
+    </template>
+
+    <template #plot>
+      <AppPlot name="jacobi" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppMatrix from '@/components/AppMatrix.vue'
 
 @Component({
-  components: {AppContentLayout, AppPlot, AppHero, AppMatrix}
+  components: {AppContentAndPlot, AppPlot, AppHero, AppMatrix}
 })
 
 export default class JacobiPage extends Vue {
