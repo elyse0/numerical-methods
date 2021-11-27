@@ -35,7 +35,7 @@
     </template>
 
     <template #plot>
-      <AppPlot name="newton-raphson" v-model="plot"/>
+      <AppPlot name="newton-raphson" v-model="plot" :callback="updateGraph"/>
     </template>
 
   </AppContentAndPlot>
