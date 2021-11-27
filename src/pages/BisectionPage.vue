@@ -63,8 +63,8 @@ import {Root} from '@/methods/NumericalMethod'
 
 export default class BisectionPage extends Vue {
 
-  inputFunction: string = ""
-  initialPoints: Partial<BisectionInitialPoints> = {p1: 0, p2: 0}
+  inputFunction: string = "sin(x)"
+  initialPoints: Partial<BisectionInitialPoints> = {p1: 0.5, p2: 5}
   precision: number = 4
 
   selectedIteration: number = 0
