@@ -50,7 +50,7 @@
     </template>
 
     <template #plot>
-      <AppPlot name="fixed-point" v-model="plot"/>
+      <AppPlot name="fixed-point" v-model="plot" :callback="updateGraph"/>
     </template>
 
   </AppContentAndPlot>
