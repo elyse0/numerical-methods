@@ -36,7 +36,7 @@
     </template>
 
     <template #plot>
-      <AppPlot name="bisection" v-model="plot"/>
+      <AppPlot name="bisection" v-model="plot" :callback="updateGraph"/>
     </template>
 
   </AppContentAndPlot>
