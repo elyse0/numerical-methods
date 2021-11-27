@@ -30,7 +30,7 @@ class SimpsonIntegration extends NumericalMethod {
 
     public static create(
         functionFx: string,
-        interval: IntegrationInterval,
+        interval: Partial<IntegrationInterval>,
         steps: number): SimpsonIntegration | null {
         const parsedFunction = this.getParsedFunction(functionFx)
         if (!parsedFunction) {
@@ -38,6 +38,10 @@ class SimpsonIntegration extends NumericalMethod {
             return null
         }
         // FIXME: Verify interval and steps
+        if (!this.isIntegrationInterval(interval)) {
+            console.log("SimpsonIntegration: Integration interval invalid")
+            return null
+        }
         let integral: number
         let type: SimpsonIntegrationType
         if (steps % 2 === 0) {
