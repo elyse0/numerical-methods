@@ -1,35 +1,34 @@
 <template>
-  <div>
-    Matrix!!!
-
+  <div v-if="matrix">
     <div class="columns">
-      <div class="column has-text-centered" v-for="column in columns" :key="column">
-        <div class="row" v-for="row in rows" :key="row" style="padding-bottom: 10px">
+      <div class="column has-text-centered" v-for="column in matrix[0].length" :key="column">
+        <div class="row" v-for="row in matrix.length" :key="row" style="padding-bottom: 10px">
           <b-numberinput :controls="false" v-model="matrix[row - 1][column - 1]">
           </b-numberinput>
         </div>
       </div>
     </div>
-
-
     Valid: {{valid}}
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, VModel, Vue, Watch} from 'vue-property-decorator'
+import {Component, VModel, Vue, Watch} from 'vue-property-decorator'
 
 @Component
 export default class AppMatrix extends Vue {
 
-  @Prop({default: 3}) readonly columns!: number
-  @Prop({default: 3}) readonly rows!: number
-
-  @VModel() matrix: number[][] = Array(this.rows).fill(0).map(() => new Array(this.columns).fill(0))
+  @VModel({
+    required: true,
+    type: Array as () => (Array<Array<number | null>> | null)
+  }) matrix!: Array<Array<number | null>>
 
   get valid(): boolean {
-    const flat = this.matrix.flat()
+    if (!this.matrix) {
+      return false
+    }
 
+    const flat = this.matrix.flat()
     const valid = flat.some((value: number | null) => value === null)
 
     return !valid
