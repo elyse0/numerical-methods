@@ -1,6 +1,6 @@
 <template>
   <AppContentLayout>
-    <br>
+    <AppHero title="Método de Newton-Raphson" :padding="1"/>
     <div class="columns">
       <div class="column">
 
@@ -44,13 +44,14 @@ import {MathNode} from 'mathjs'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
 import AppPlot from '@/components/AppPlot.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
 import NewtonRaphson, {NewtonRaphsonIterations} from '@/methods/NewtonRaphson'
 import {Point, Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppPlot, AppContentLayout, AppNumberInput}
+  components: {AppPlot, AppContentLayout, AppHero, AppNumberInput}
 })
 
 export default class NewtonRaphsonPage extends Vue {
