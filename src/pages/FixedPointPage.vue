@@ -57,6 +57,7 @@
 </template>
 
 <script lang="ts">
+import AppRow from '@/components/common/AppRow.vue'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
@@ -69,7 +70,7 @@ import FixedPoint, {FixedPointIteration} from '@/methods/FixedPoint'
 import {Point, Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentAndPlot, AppHero, AppPlot, AppNumberInput}
+  components: {AppRow, AppContentAndPlot, AppHero, AppPlot, AppNumberInput}
 })
 
 export default class FixedPointPage extends Vue {

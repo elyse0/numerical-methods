@@ -30,7 +30,24 @@
           <b-slider v-model="selectedIteration" :min="1" :max="newtonRaphson.iterations.length" ticks/>
         </b-field>
 
-        {{currentIteration}}
+        <div>
+          <AppRow>
+            <katex-element :expression="`x_{${selectedIteration - 1}} =` + currentIteration.x"/>
+          </AppRow>
+
+          <AppRow>
+            <katex-element :expression="'f('+currentIteration.x + ') = ' + currentIteration.fx"/>
+          </AppRow>
+
+          <AppRow>
+            <katex-element :expression="'f\'('+currentIteration.x + ') = ' + currentIteration.dfx"/>
+          </AppRow>
+
+          <AppRow>
+            <katex-element :expression="`x_{${selectedIteration}} =` + currentIteration.approximation"/>
+          </AppRow>
+        </div>
+
       </div>
     </template>
 
@@ -42,6 +59,7 @@
 </template>
 
 <script lang="ts">
+import AppRow from '@/components/common/AppRow.vue'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
@@ -54,7 +72,7 @@ import NewtonRaphson, {NewtonRaphsonIterations} from '@/methods/NewtonRaphson'
 import {Point, Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentAndPlot, AppHero, AppPlot, AppNumberInput}
+  components: {AppRow, AppContentAndPlot, AppHero, AppPlot, AppNumberInput}
 })
 
 export default class NewtonRaphsonPage extends Vue {
@@ -128,8 +146,7 @@ export default class NewtonRaphsonPage extends Vue {
 
     if (this.currentIteration) {
       message["derivativeFx"] =
-          `f(x)=${this.currentIteration.dfx.toFixed(10)}
-          *(x-${this.currentIteration.approximation.toFixed(10)})`
+          `f(x)=${this.currentIteration.dfx.toFixed(10)}*(x-${this.currentIteration.approximation.toFixed(10)})`
     }
 
     if (this.linePattern) {
