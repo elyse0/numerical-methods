@@ -10,7 +10,7 @@
     </template>
 
     <template #plot>
-      <AppPlot name="least-squares" v-model="plot"/>
+      <AppPlot name="least-squares" v-model="plot" :callback="updatePlot"/>
     </template>
 
   </AppContentAndPlot>
