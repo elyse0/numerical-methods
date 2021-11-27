@@ -55,7 +55,7 @@ export default class TaylorSeriesPage extends Vue {
   plot: Window | null = null
 
   get taylorSeries(): TaylorSeries | null {
-    return TaylorSeries.create("e^x", this.iterations)
+    return TaylorSeries.create(this.inputFunction, this.iterations)
   }
 
   get approximationSum(): string | null {
