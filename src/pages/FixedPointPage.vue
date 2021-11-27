@@ -1,64 +1,66 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Método de punto fijo" :padding="1"/>
+  <AppContentAndPlot>
 
-    <div class="columns">
-      <div class="column">
+    <template #header>
+      <AppHero title="Método de punto fijo" :padding="1"/>
+    </template>
 
-        <b-field label="Función f(x)" label-position="inside">
-          <b-input v-model="inputFunctionFx"/>
-        </b-field>
+    <template #content>
+      <b-field label="Función f(x)" label-position="inside">
+        <b-input v-model="inputFunctionFx"/>
+      </b-field>
 
-        <b-field label="Función g(x)" label-position="inside">
-          <b-input v-model="inputFunctionGx"/>
-        </b-field>
+      <b-field label="Función g(x)" label-position="inside">
+        <b-input v-model="inputFunctionGx"/>
+      </b-field>
 
-        <b-field grouped>
-          <AppNumberInput label="Punto inicial" v-model="initialPoint" @input="updateGraph"/>
-          <AppNumberInput label="Precisión" v-model="precision" step="1" :min="1" :max="8" @input="updateGraph"/>
-        </b-field>
+      <b-field grouped>
+        <AppNumberInput label="Punto inicial" v-model="initialPoint" @input="updateGraph"/>
+        <AppNumberInput label="Precisión" v-model="precision" step="1" :min="1" :max="8" @input="updateGraph"/>
+      </b-field>
 
-        <div v-if="parsedFunctionFx" class="has-text-centered" style="padding-bottom: 10px">
-          <katex-element :expression="'f(x)='+parsedFunctionFx.toTex()"/>
+      <div v-if="parsedFunctionFx" class="has-text-centered" style="padding-bottom: 10px">
+        <katex-element :expression="'f(x)='+parsedFunctionFx.toTex()"/>
+      </div>
+
+      <div v-if="parsedFunctionGx" class="has-text-centered" style="padding-bottom: 10px">
+        <katex-element :expression="'g(x)='+parsedFunctionGx.toTex()"/>
+      </div>
+
+      <div v-if="fixedPoint" class="container has-text-centered">
+
+        <div style="padding-bottom: 10px">
+          <katex-element :expression="'f('+root.x + ') = ' + root.fx"/>
         </div>
 
-        <div v-if="parsedFunctionGx" class="has-text-centered" style="padding-bottom: 10px">
-          <katex-element :expression="'g(x)='+parsedFunctionGx.toTex()"/>
+        <b-field :label="'Iteración ' + (selectedIteration) + '/' + (fixedPoint.iterations.length)"
+                 v-if="fixedPoint.iterations.length !== 1">
+          <b-slider v-model="selectedIteration" :min="1" :max="fixedPoint.iterations.length" ticks/>
+        </b-field>
+        <div>
+          <katex-element :expression="'x='+currentIteration.x"/>
         </div>
-
-        <div v-if="fixedPoint" class="container has-text-centered">
-
-          <div style="padding-bottom: 10px">
-            <katex-element :expression="'f('+root.x + ') = ' + root.fx"/>
-          </div>
-
-          <b-field :label="'Iteración ' + (selectedIteration) + '/' + (fixedPoint.iterations.length)"
-                   v-if="fixedPoint.iterations.length !== 1">
-            <b-slider v-model="selectedIteration" :min="1" :max="fixedPoint.iterations.length" ticks/>
-          </b-field>
-          <div>
-            <katex-element :expression="'x='+currentIteration.x"/>
-          </div>
-          <div>
-            <katex-element :expression="'f('+currentIteration.x+')='+currentIteration.fx"/>
-          </div>
-          <div>
-            <katex-element :expression="'g('+currentIteration.x+')='+currentIteration.gx"/>
-          </div>
+        <div>
+          <katex-element :expression="'f('+currentIteration.x+')='+currentIteration.fx"/>
+        </div>
+        <div>
+          <katex-element :expression="'g('+currentIteration.x+')='+currentIteration.gx"/>
         </div>
       </div>
-      <div class="column">
-        <AppPlot name="fixed-point" v-model="plot"/>
-      </div>
-    </div>
-  </AppContentLayout>
+    </template>
+
+    <template #plot>
+      <AppPlot name="fixed-point" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
@@ -67,7 +69,7 @@ import FixedPoint, {FixedPointIteration} from '@/methods/FixedPoint'
 import {Point, Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentLayout, AppHero, AppPlot, AppNumberInput}
+  components: {AppContentAndPlot, AppHero, AppPlot, AppNumberInput}
 })
 
 export default class FixedPointPage extends Vue {
