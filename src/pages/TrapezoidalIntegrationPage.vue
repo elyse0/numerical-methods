@@ -1,23 +1,28 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Integración trapezoidal" :padding="1"/>
-    <div class="columns">
-      <div class="column">
-        <div v-if="trapezoidalIntegration">
-          <katex-element :expression="trapezoidalIntegration.integralFunction"/>
-          {{trapezoidalIntegration.integral}}
-        </div>
-        <b-button @click="updatePlot">Click me</b-button>
-      </div>
 
-      <div class="column">
-        <AppPlot name="integration" v-model="plot"/>
+  <AppContentAndPlot>
+
+    <template #header>
+      <AppHero title="Integración trapezoidal" :padding="1"/>
+    </template>
+
+    <template #content>
+      <div v-if="trapezoidalIntegration">
+        <katex-element :expression="trapezoidalIntegration.integralFunction"/>
+        {{trapezoidalIntegration.integral}}
       </div>
-    </div>
-  </AppContentLayout>
+      <b-button @click="updatePlot">Click me</b-button>
+    </template>
+
+    <template #plot>
+      <AppPlot name="integration" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import {Component, Vue} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
@@ -27,7 +32,7 @@ import AppPlot from '@/components/AppPlot.vue'
 import TrapezoidalIntegration from '@/methods/TrapezoidalIntegration'
 
 @Component({
-  components: {AppContentLayout, AppHero, AppPlot}
+  components: {AppContentAndPlot, AppContentLayout, AppHero, AppPlot}
 })
 
 export default class TrapezoidalIntegrationPage extends Vue {
