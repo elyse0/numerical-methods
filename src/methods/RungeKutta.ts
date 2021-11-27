@@ -68,17 +68,17 @@ class RungeKutta extends NumericalMethod {
         console.log(k4)
         console.log(approximation)
 
-        const rungeKuttaIteration: RungeKuttaIteration = {k1, k2, k3, k4, x: x + step, y: approximation}
+        const rungeKuttaIteration: RungeKuttaIteration = {k1, k2, k3, k4, x, y}
 
         if (iteration === 0) {
             return [rungeKuttaIteration]
         }
 
-        return RungeKutta.method(
+        return [rungeKuttaIteration].concat(RungeKutta.method(
             differentialEquation,
-            {x: rungeKuttaIteration.x, y: rungeKuttaIteration.y},
+            {x: rungeKuttaIteration.x + step, y: approximation},
             step,
-            iteration - 1)
+            iteration - 1))
     }
 }
 
