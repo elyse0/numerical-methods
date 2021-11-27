@@ -1,5 +1,6 @@
 <template>
   <AppContentLayout>
+    <AppHero title="Interpolación lineal" :padding="1"/>
     <div class="columns">
       <div class="column">
         <AppPointsList v-model="pointsList" @update="updatePlot"/>
@@ -21,6 +22,7 @@
 </template>
 
 <script lang="ts">
+import AppHero from '@/components/AppHero.vue'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
@@ -31,7 +33,7 @@ import LinearInterpolation from '@/methods/LinearInterpolation'
 import {Point} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppPlot, AppPointsList, AppContentLayout}
+  components: {AppHero, AppPlot, AppPointsList, AppContentLayout}
 })
 
 export default class LinearInterpolationPage extends Vue {
