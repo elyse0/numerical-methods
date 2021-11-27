@@ -1,6 +1,6 @@
 <template>
   <AppContentLayout>
-
+    <AppHero title="Método de Jacobi" :padding="1"/>
     <div class="columns">
       <div class="column">
         <AppMatrix></AppMatrix>
@@ -17,11 +17,12 @@
 import {Component, Vue} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppMatrix from '@/components/AppMatrix.vue'
 
 @Component({
-  components: {AppContentLayout, AppPlot, AppMatrix}
+  components: {AppContentLayout, AppPlot, AppHero, AppMatrix}
 })
 
 export default class JacobiPage extends Vue {
