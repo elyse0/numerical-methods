@@ -55,7 +55,7 @@ import AppLatexFunction from '@/components/AppLatexFunction.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 import AppBisectionIterationButtons from '@/components/Bisection/AppBisectionIterationButtons.vue'
 
-import {Bisection, BisectionInitialPoints, BisectionIteration} from '@/methods/Bisection'
+import {Bisection, BisectionInitialPoints, BisectionIteration, isBisectionInitialPoints} from '@/methods/Bisection'
 import {Root} from '@/methods/NumericalMethod'
 
 @Component({
@@ -65,7 +65,7 @@ import {Root} from '@/methods/NumericalMethod'
 export default class BisectionPage extends Vue {
 
   inputFunction: string = ""
-  initialPoints: BisectionInitialPoints = {p1: 0, p2: 0}
+  initialPoints: Partial<BisectionInitialPoints> = {p1: 0, p2: 0}
   precision: number = 4
 
   selectedIteration: number = 0
@@ -81,7 +81,10 @@ export default class BisectionPage extends Vue {
       return null
     }
 
-    return {x: Bisection.round(this.bisectionMethod.root.x), fx: Bisection.round(this.bisectionMethod.root.fx)}
+    return {
+      x: Bisection.round(this.bisectionMethod.root.x),
+      fx: Bisection.round(this.bisectionMethod.root.fx)
+    }
   }
 
   get currentIteration(): BisectionIteration | null {
@@ -105,15 +108,23 @@ export default class BisectionPage extends Vue {
   }
 
   updateGraph() {
-    if (!this.plot)
+
+    if (!this.plot) {
       return
+    }
 
     const message: any = {}
-    message["mathFunction"] = this.parsedFunction ? "f(x)=" + this.parsedFunction.toTex() : ""
+    const parsedFunction = this.parsedFunction
 
-    if (!this.currentIteration && this.parsedFunction) {
-      message["p1"] = {x: this.initialPoints.p1, fx: Bisection.evaluate(this.parsedFunction.compile(), this.initialPoints.p1)}
-      message["p2"] = {x: this.initialPoints.p2, fx: Bisection.evaluate(this.parsedFunction.compile(), this.initialPoints.p2)}
+    if (parsedFunction) {
+      message["mathFunction"] = Bisection.getFxEquation(parsedFunction.toString())
+    }
+
+    if (!this.currentIteration && parsedFunction) {
+      if (isBisectionInitialPoints(this.initialPoints)) {
+        message["p1"] = {x: this.initialPoints.p1, fx: Bisection.evaluate(parsedFunction.compile(), this.initialPoints.p1)}
+        message["p2"] = {x: this.initialPoints.p2, fx: Bisection.evaluate(parsedFunction.compile(), this.initialPoints.p2)}
+      }
     }
 
     if (this.currentIteration) {
