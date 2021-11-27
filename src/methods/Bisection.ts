@@ -23,6 +23,11 @@ interface BisectionIteration {
     p3: BisectionIterationPoint
 }
 
+const isBisectionInitialPoints = (initialPoints: Partial<BisectionInitialPoints>): initialPoints is BisectionInitialPoints => {
+    return initialPoints.p1 !== null && initialPoints.p1 !== undefined
+        && initialPoints.p2 !== null && initialPoints.p2 !== undefined
+}
+
 class Bisection extends NumericalMethod {
 
     public parsedFunction: MathNode
@@ -38,10 +43,14 @@ class Bisection extends NumericalMethod {
         this.root = {x: bisectionIterations[bisectionIterations.length - 1].p3.x, fx: bisectionIterations[bisectionIterations.length - 1].p3.fx}
     }
 
-    static create(inputFunction: string, initialPoints: BisectionInitialPoints, precision: number = 4): Bisection | null {
+    static create(inputFunction: string, initialPoints: Partial<BisectionInitialPoints>, precision: number = 4): Bisection | null {
         const parsedFunction = Bisection.getParsedFunction(inputFunction)
         if (!parsedFunction) {
             console.log("Error parsing function")
+            return null
+        }
+        if (!isBisectionInitialPoints(initialPoints)) {
+            console.log("Initial points object is invalid")
             return null
         }
         if (!Bisection.isIntervalValid(parsedFunction, initialPoints)) {
@@ -150,16 +159,22 @@ class Bisection extends NumericalMethod {
         }
     }
 
-    static isIntervalValid(mathFunction: EvalFunction, initialPoints: BisectionInitialPoints){
+    static isIntervalValid(mathFunction: EvalFunction, initialPoints: Partial<BisectionInitialPoints>){
 
-        if (initialPoints.p1 === initialPoints.p2)
+        if (!isBisectionInitialPoints(initialPoints)) {
+            console.log("Initial points object is invalid")
             return false
+        }
 
-        const f1 = mathFunction.evaluate({x: initialPoints.p1})
-        const f2 = mathFunction.evaluate({x: initialPoints.p2})
+        if (initialPoints.p1 === initialPoints.p2) {
+            return false
+        }
+
+        const f1 = Bisection.evaluate(mathFunction, initialPoints.p1)
+        const f2 = Bisection.evaluate(mathFunction, initialPoints.p2)
 
         return f1 * f2 < 0
     }
 }
 
-export {Bisection, BisectionInitialPoints, BisectionIteration, BisectionIterationPoint}
+export {Bisection, BisectionInitialPoints, BisectionIteration, BisectionIterationPoint, isBisectionInitialPoints}
