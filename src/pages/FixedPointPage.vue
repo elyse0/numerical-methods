@@ -1,6 +1,7 @@
 <template>
   <AppContentLayout>
-    <br>
+    <AppHero title="Método de punto fijo" :padding="1"/>
+
     <div class="columns">
       <div class="column">
 
@@ -58,6 +59,7 @@ import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
@@ -65,7 +67,7 @@ import FixedPoint, {FixedPointIteration} from '@/methods/FixedPoint'
 import {Point, Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentLayout, AppPlot, AppNumberInput}
+  components: {AppContentLayout, AppHero, AppPlot, AppNumberInput}
 })
 
 export default class FixedPointPage extends Vue {
