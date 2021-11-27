@@ -37,7 +37,7 @@
       </div>
 
       <div class="column">
-        <AppPlot name="plot" v-model="plot"/>
+        <AppPlot name="bisection" v-model="plot"/>
       </div>
 
     </div>

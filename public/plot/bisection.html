@@ -18,10 +18,12 @@
 
     const receiveDataFromWeb =  (message) => {
 
-        if (message.data.mathFunction !== undefined) {
+        if (message.data.mathFunction === undefined) {
+            calculator.removeExpression(mathFunction)
+        } else {
             mathFunction.latex = message.data.mathFunction
+            calculator.setExpression(mathFunction)
         }
-        calculator.setExpression(mathFunction)
 
         if (message.data.p1 === undefined) {
             calculator.removeExpression(p1)
