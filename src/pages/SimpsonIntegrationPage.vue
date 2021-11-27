@@ -15,7 +15,7 @@
     </template>
 
     <template #plot>
-      <AppPlot name="integration" v-model="plot"/>
+      <AppPlot name="integration" v-model="plot" :callback="updatePlot"/>
     </template>
 
   </AppContentAndPlot>
