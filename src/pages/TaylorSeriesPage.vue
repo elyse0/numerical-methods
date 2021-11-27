@@ -1,5 +1,6 @@
 <template>
   <AppContentLayout>
+    <AppHero title="Serie de Taylor" :padding="1"/>
     <div class="columns">
       <div class="column">
         <b-field label="Función" label-position="inside">
@@ -38,11 +39,12 @@ import {Component, Vue, Watch} from 'vue-property-decorator'
 import TaylorSeries from '@/methods/TaylorSeries'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
-import AppNumberInput from '@/components/AppNumberInput.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
+import AppNumberInput from '@/components/AppNumberInput.vue'
 
 @Component({
-  components: {AppContentLayout, AppNumberInput, AppPlot}
+  components: {AppContentLayout, AppHero, AppPlot, AppNumberInput}
 })
 
 export default class TaylorSeriesPage extends Vue {
