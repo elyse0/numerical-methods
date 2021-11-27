@@ -40,7 +40,7 @@ import {Point} from '@/methods/NumericalMethod'
 
 export default class LinearInterpolationPage extends Vue {
 
-  pointsList: Partial<Point>[] = [{}, {}]
+  pointsList: Partial<Point>[] = [{x: 1, y: 1}, {x: 2, y: 2}]
 
   plot: Window | null = null
 
