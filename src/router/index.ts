@@ -21,68 +21,107 @@ const routes: Array<RouteConfig> = [
     {
         path: "/",
         name: "Mainpage",
-        component: Mainpage
+        component: Mainpage,
+        meta: {
+            title: "Métodos numéricos"
+        }
     },
     {
         path: '/root-of-polynomials/bisection',
         name: 'BisectionPage',
-        component: BisectionPage
+        component: BisectionPage,
+        meta: {
+            title: "Método de Bisection"
+        }
     },
     {
         path: '/root-of-polynomials/fixed-point',
         name: 'FixedPointPage',
-        component: FixedPointPage
+        component: FixedPointPage,
+        meta: {
+            title: "Método de punto fijo"
+        }
     },
     {
         path: '/root-of-polynomials/newton-raphson',
         name: 'NewtonRaphsonPage',
-        component: NewtonRaphsonPage
+        component: NewtonRaphsonPage,
+        meta: {
+            title: "Método de Newton-Raphson"
+        }
     },
     {
         path: '/linear-system/jacobi',
         name: 'JacobiPage',
-        component: JacobiPage
+        component: JacobiPage,
+        meta: {
+            title: "Método de Jacobi"
+        }
     },
     {
         path: '/interpolation/linear',
         name: 'LinearInterpolationPage',
-        component: LinearInterpolationPage
+        component: LinearInterpolationPage,
+        meta: {
+            title: "Interpolación lineal"
+        }
     },
     {
         path: '/interpolation/quadratic',
         name: 'QuadraticInterpolationPage',
-        component: QuadraticInterpolationPage
+        component: QuadraticInterpolationPage,
+        meta: {
+            title: "Interpolación cuadrática"
+        }
     },
     {
         path: '/interpolation/least-squares',
         name: 'LeastSquaresPage',
-        component: LeastSquaresPage
+        component: LeastSquaresPage,
+        meta: {
+            title: "Interpolación por minimos cuadrados"
+        }
     },
     {
         path: '/approximation/taylor-series',
         name: 'TaylorSeriesPage',
-        component: TaylorSeriesPage
+        component: TaylorSeriesPage,
+        meta: {
+            title: "Serie de Taylor"
+        }
     },
     {
         path: '/integration/trapezoidal',
         name: 'TrapezoidalIntegrationPage',
-        component: TrapezoidalIntegrationPage
+        component: TrapezoidalIntegrationPage,
+        meta: {
+            title: "Integración trapezoidal"
+        }
     },
 
     {
         path: '/integration/simpson-1-3',
         name: 'SimpsonIntegrationPage',
-        component: SimpsonIntegrationPage
+        component: SimpsonIntegrationPage,
+        meta: {
+            title: "Integración Simpson"
+        }
     },
     {
         path: '/ode/runge-kutta',
         name: 'RungeKuttaPage',
-        component: RungeKuttaPage
+        component: RungeKuttaPage,
+        meta: {
+            title: "Runge-Kutta 4° orden"
+        }
     },
     {
         path: '*',
         name: 'Page404',
-        component: Page404
+        component: Page404,
+        meta: {
+            title: "404"
+        }
     }
 ]
 
@@ -90,6 +129,17 @@ const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
+})
+
+router.beforeEach((to, from, next) => {
+
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+    if(nearestWithTitle) {
+        document.title = nearestWithTitle.meta.title;
+    }
+
+    next()
 })
 
 export default router
