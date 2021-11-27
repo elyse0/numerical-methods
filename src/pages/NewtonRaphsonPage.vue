@@ -1,57 +1,60 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Método de Newton-Raphson" :padding="1"/>
-    <div class="columns">
-      <div class="column">
+  <AppContentAndPlot>
 
-        <b-field label="Función f(x)" label-position="inside">
-          <b-input v-model="inputFunctionFx"/>
-        </b-field>
+    <template #header>
+      <AppHero title="Método de Newton-Raphson" :padding="1"/>
+    </template>
 
-        <b-field grouped>
-          <AppNumberInput label="Punto inicial" v-model="initialPoint"/>
-          <AppNumberInput label="Precisión" v-model="precision" step="1"/>
-        </b-field>
+    <template #content>
+      <b-field label="Función f(x)" label-position="inside">
+        <b-input v-model="inputFunctionFx"/>
+      </b-field>
 
-        <div v-if="parsedFunctionFx" class="has-text-centered" style="padding-bottom: 10px">
-          <katex-element :expression="'f(x)='+parsedFunctionFx.toTex()"/>
+      <b-field grouped>
+        <AppNumberInput label="Punto inicial" v-model="initialPoint"/>
+        <AppNumberInput label="Precisión" v-model="precision" step="1"/>
+      </b-field>
+
+      <div v-if="parsedFunctionFx" class="has-text-centered" style="padding-bottom: 10px">
+        <katex-element :expression="'f(x)='+parsedFunctionFx.toTex()"/>
+      </div>
+
+      <div v-if="newtonRaphson" class="has-text-centered">
+
+        <div style="padding-bottom: 10px">
+          <katex-element :expression="'f('+root.x + ') = ' + root.fx"/>
         </div>
 
-        <div v-if="newtonRaphson" class="has-text-centered">
+        <b-field :label="'Iteración ' + (selectedIteration) + '/' + (newtonRaphson.iterations.length)"
+                 v-if="newtonRaphson.iterations.length !== 1">
+          <b-slider v-model="selectedIteration" :min="1" :max="newtonRaphson.iterations.length" ticks/>
+        </b-field>
 
-          <div style="padding-bottom: 10px">
-            <katex-element :expression="'f('+root.x + ') = ' + root.fx"/>
-          </div>
-
-          <b-field :label="'Iteración ' + (selectedIteration) + '/' + (newtonRaphson.iterations.length)"
-                   v-if="newtonRaphson.iterations.length !== 1">
-            <b-slider v-model="selectedIteration" :min="1" :max="newtonRaphson.iterations.length" ticks/>
-          </b-field>
-
-          {{currentIteration}}
-        </div>
+        {{currentIteration}}
       </div>
-      <div class="column">
-        <AppPlot name="newton-raphson" v-model="plot"/>
-      </div>
-    </div>
-  </AppContentLayout>
+    </template>
+
+    <template #plot>
+      <AppPlot name="newton-raphson" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
-import AppPlot from '@/components/AppPlot.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
+import AppPlot from '@/components/AppPlot.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
 import NewtonRaphson, {NewtonRaphsonIterations} from '@/methods/NewtonRaphson'
 import {Point, Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppPlot, AppContentLayout, AppHero, AppNumberInput}
+  components: {AppContentAndPlot, AppHero, AppPlot, AppNumberInput}
 })
 
 export default class NewtonRaphsonPage extends Vue {
