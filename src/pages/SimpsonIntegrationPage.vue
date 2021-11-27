@@ -1,34 +1,37 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Integración Simpson" :padding="1"/>
-    <div class="columns">
-      <div class="column">
-        <div v-if="simpsonIntegration">
-          Type: {{simpsonIntegration.type}}
-          <katex-element :expression="simpsonIntegration.integralFunction"/>
-          {{simpsonIntegration.integral}}
-          <b-button @click="updatePlot">Click me</b-button>
-        </div>
-      </div>
+  <AppContentAndPlot>
 
-      <div class="column">
-        <AppPlot name="integration" v-model="plot"/>
+    <template #header>
+      <AppHero title="Integración Simpson" :padding="1"/>
+    </template>
+
+    <template #content>
+      <div v-if="simpsonIntegration">
+        Type: {{simpsonIntegration.type}}
+        <katex-element :expression="simpsonIntegration.integralFunction"/>
+        {{simpsonIntegration.integral}}
+        <b-button @click="updatePlot">Click me</b-button>
       </div>
-    </div>
-  </AppContentLayout>
+    </template>
+
+    <template #plot>
+      <AppPlot name="integration" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 
 import SimpsonIntegration from '@/methods/SimpsonIntegration'
 
 @Component({
-  components: {AppHero, AppContentLayout, AppPlot}
+  components: {AppContentAndPlot, AppHero, AppPlot}
 })
 
 export default class SimpsonIntegrationPage extends Vue {
