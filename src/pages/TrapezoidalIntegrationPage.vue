@@ -1,5 +1,6 @@
 <template>
   <AppContentLayout>
+    <AppHero title="Integración trapezoidal" :padding="1"/>
     <div class="columns">
       <div class="column">
         <div v-if="trapezoidalIntegration">
@@ -20,12 +21,13 @@
 import {Component, Vue} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 
 import TrapezoidalIntegration from '@/methods/TrapezoidalIntegration'
 
 @Component({
-  components: {AppContentLayout, AppPlot}
+  components: {AppContentLayout, AppHero, AppPlot}
 })
 
 export default class TrapezoidalIntegrationPage extends Vue {
