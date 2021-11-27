@@ -18,15 +18,15 @@
       </b-field>
 
       <div v-if="parsedFunction" class="has-text-centered" style="padding-bottom: 10px">
-        <AppLatexFunction :input-function="this.inputFunction" fx/>
+        <AppLatexFunction :input-function="inputFunction" fx/>
       </div>
 
       <div v-if="bisectionMethod && isIntervalValid" class="container has-text-centered" >
         <div style="padding-bottom: 10px">
-          <AppLatexFunction :input-function="this.root.fx.toString()" :x="root.x.toString()" fx/>
+          <AppLatexFunction :input-function="root.fx.toString()" :x="root.x.toString()" fx/>
         </div>
 
-        <b-field :label="'Iteración ' + (this.selectedIteration) + '/' + (this.bisectionMethod.bisectionIterations.length)"
+        <b-field :label="'Iteración ' + (selectedIteration) + '/' + (bisectionMethod.bisectionIterations.length)"
                  v-if="bisectionMethod.bisectionIterations.length !== 1">
           <b-slider v-model="selectedIteration" :min="1" :max="bisectionMethod.bisectionIterations.length" ticks/>
         </b-field>
