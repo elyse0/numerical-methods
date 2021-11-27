@@ -1,6 +1,6 @@
 <template>
   <AppContentLayout>
-    <br>
+    <AppHero title="Interpolación por minimos cuadrados" :padding="1"/>
     <div class="columns">
       <div class="column">
         <AppPointsList v-model="pointsList"/>
@@ -18,6 +18,7 @@
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppPointsList from '@/components/AppPointsList.vue'
 
@@ -25,12 +26,12 @@ import LeastSquaresInterpolation from '@/methods/LeastSquaresInterpolation'
 import {Point} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentLayout, AppPlot, AppPointsList}
+  components: {AppContentLayout, AppHero,  AppPlot, AppPointsList}
 })
 
 export default class LeastSquaresPage extends Vue {
 
-  pointsList: Partial<Point>[] = []
+  pointsList: Partial<Point>[] = [{}, {}, {}]
   selectedIteration: number = 1
   plot: Window | null = null
 
