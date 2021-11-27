@@ -1,54 +1,52 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Método de Bisección" :padding="1"></AppHero>
+  <AppContentAndPlot>
 
-    <div class="columns">
+    <template #header>
+      <AppHero title="Método de Bisección" :padding="1"></AppHero>
+    </template>
 
-      <div class="column">
+    <template #content>
+      <b-field label="Función" label-position="inside">
+        <b-input v-model="inputFunction"/>
+      </b-field>
 
-        <b-field label="Función" label-position="inside">
-          <b-input v-model="inputFunction"/>
-        </b-field>
+      <b>Intervalo [a, b] en donde encuentra la raiz</b>
+      <b-field grouped>
+        <AppNumberInput label="a" v-model="initialPoints.p1" @input="updateGraph"/>
+        <AppNumberInput label="b" v-model="initialPoints.p2" @input="updateGraph"/>
+        <AppNumberInput label="Precisión" v-model="precision" step="1" :min="1" :max="8" @input="updateGraph"/>
+      </b-field>
 
-        <b>Intervalo [a, b] en donde encuentra la raiz</b>
-        <b-field grouped>
-          <AppNumberInput label="a" v-model="initialPoints.p1" @input="updateGraph"/>
-          <AppNumberInput label="b" v-model="initialPoints.p2" @input="updateGraph"/>
-          <AppNumberInput label="Precisión" v-model="precision" step="1" :min="1" :max="8" @input="updateGraph"/>
-        </b-field>
-
-        <div v-if="parsedFunction" class="has-text-centered" style="padding-bottom: 10px">
-          <AppLatexFunction :input-function="this.inputFunction" fx/>
-        </div>
-
-        <div v-if="bisectionMethod && isIntervalValid" class="container has-text-centered" >
-          <div style="padding-bottom: 10px">
-            <AppLatexFunction :input-function="this.root.fx.toString()" :x="root.x.toString()" fx/>
-          </div>
-
-          <b-field :label="'Iteración ' + (this.selectedIteration) + '/' + (this.bisectionMethod.bisectionIterations.length)"
-                   v-if="bisectionMethod.bisectionIterations.length !== 1">
-            <b-slider v-model="selectedIteration" :min="1" :max="bisectionMethod.bisectionIterations.length" ticks/>
-          </b-field>
-          <br>
-          <AppBisectionIterationButtons :iteration="currentIteration" :precision="precision + 1"/>
-        </div>
-
+      <div v-if="parsedFunction" class="has-text-centered" style="padding-bottom: 10px">
+        <AppLatexFunction :input-function="this.inputFunction" fx/>
       </div>
 
-      <div class="column">
-        <AppPlot name="bisection" v-model="plot"/>
-      </div>
+      <div v-if="bisectionMethod && isIntervalValid" class="container has-text-centered" >
+        <div style="padding-bottom: 10px">
+          <AppLatexFunction :input-function="this.root.fx.toString()" :x="root.x.toString()" fx/>
+        </div>
 
-    </div>
-  </AppContentLayout>
+        <b-field :label="'Iteración ' + (this.selectedIteration) + '/' + (this.bisectionMethod.bisectionIterations.length)"
+                 v-if="bisectionMethod.bisectionIterations.length !== 1">
+          <b-slider v-model="selectedIteration" :min="1" :max="bisectionMethod.bisectionIterations.length" ticks/>
+        </b-field>
+        <br>
+        <AppBisectionIterationButtons :iteration="currentIteration" :precision="precision + 1"/>
+      </div>
+    </template>
+
+    <template #plot>
+      <AppPlot name="bisection" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import {MathNode} from 'mathjs'
 
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppLatexFunction from '@/components/AppLatexFunction.vue'
@@ -59,7 +57,8 @@ import {Bisection, BisectionInitialPoints, BisectionIteration, isBisectionInitia
 import {Root} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentLayout, AppHero, AppPlot, AppLatexFunction, AppNumberInput, AppBisectionIterationButtons}
+  components: {
+    AppContentAndPlot, AppHero, AppPlot, AppLatexFunction, AppNumberInput, AppBisectionIterationButtons}
 })
 
 export default class BisectionPage extends Vue {
