@@ -119,6 +119,15 @@ abstract class NumericalMethod {
         return !pointsList.some((point) => !this.isPoint(point))
     }
 
+    static isIntegrationInterval(integrationInterval: Partial<IntegrationInterval>): integrationInterval is IntegrationInterval {
+
+        if (!(typeof integrationInterval.x0 === 'number' && typeof integrationInterval.x1 === 'number')) {
+            return false
+        }
+
+        return integrationInterval.x0 < integrationInterval.x1;
+    }
+
     static getNumberStringMultipliedBySign(number: number, sign: Sign = Sign.positive, precision: number = 4): string {
 
         if (sign === Sign.positive) {
