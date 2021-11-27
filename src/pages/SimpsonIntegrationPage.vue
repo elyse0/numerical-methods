@@ -1,5 +1,6 @@
 <template>
   <AppContentLayout>
+    <AppHero title="Integración Simpson" :padding="1"/>
     <div class="columns">
       <div class="column">
         <div v-if="simpsonIntegration">
@@ -21,12 +22,13 @@
 import {Component, Vue} from 'vue-property-decorator'
 
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 
 import SimpsonIntegration from '@/methods/SimpsonIntegration'
 
 @Component({
-  components: {AppContentLayout, AppPlot}
+  components: {AppHero, AppContentLayout, AppPlot}
 })
 
 export default class SimpsonIntegrationPage extends Vue {
