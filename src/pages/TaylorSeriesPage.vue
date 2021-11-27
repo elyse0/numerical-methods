@@ -1,50 +1,53 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Serie de Taylor" :padding="1"/>
-    <div class="columns">
-      <div class="column">
-        <b-field label="Función" label-position="inside">
-          <b-input v-model="inputFunction" @input="updatePlot"/>
+  <AppContentAndPlot>
+
+    <template #header>
+      <AppHero title="Serie de Taylor" :padding="1"/>
+    </template>
+
+    <template #content>
+      <b-field label="Función" label-position="inside">
+        <b-input v-model="inputFunction" @input="updatePlot"/>
+      </b-field>
+      <b>Número de iteraciones</b>
+      <b-field grouped>
+        <AppNumberInput label="Iteraciones" v-model="iterations" :min="1" @input="updatePlot"/>
+      </b-field>
+
+      <katex-element :expression="parsedInputFunction"/>
+
+      <div v-if="taylorSeries">
+
+        <katex-element :expression="approximationSum"/>
+
+        <b-field :label="'Iteración ' + (selectedIteration) + '/' + (taylorSeries.iterations.length)">
+          <b-slider v-model="selectedIteration" :min="1" :max="taylorSeries.iterations.length" ticks/>
         </b-field>
-        <b>Número de iteraciones</b>
-        <b-field grouped>
-          <AppNumberInput label="Iteraciones" v-model="iterations" :min="1" @input="updatePlot"/>
-        </b-field>
 
-        <katex-element :expression="parsedInputFunction"/>
-
-        <div v-if="taylorSeries">
-
-          <katex-element :expression="approximationSum"/>
-
-          <b-field :label="'Iteración ' + (this.selectedIteration) + '/' + (this.taylorSeries.iterations.length)">
-            <b-slider v-model="selectedIteration" :min="1" :max="this.taylorSeries.iterations.length" ticks/>
-          </b-field>
-
-          <b-button @click="updatePlot">Click me</b-button>
-          {{taylorSeries}}
-        </div>
+        <b-button @click="updatePlot">Click me</b-button>
+        {{taylorSeries}}
       </div>
+    </template>
 
-      <div class="column">
-        <AppPlot name="taylor-series" v-model="plot"/>
-      </div>
-    </div>
-  </AppContentLayout>
+    <template #plot>
+      <AppPlot name="taylor-series" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
-import TaylorSeries from '@/methods/TaylorSeries'
-
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppNumberInput from '@/components/AppNumberInput.vue'
 
+import TaylorSeries from '@/methods/TaylorSeries'
+
 @Component({
-  components: {AppContentLayout, AppHero, AppPlot, AppNumberInput}
+  components: {AppContentAndPlot, AppHero, AppPlot, AppNumberInput}
 })
 
 export default class TaylorSeriesPage extends Vue {
