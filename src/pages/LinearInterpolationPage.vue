@@ -1,31 +1,33 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Interpolación lineal" :padding="1"/>
-    <div class="columns">
-      <div class="column">
-        <AppPointsList v-model="pointsList" @update="updatePlot"/>
+  <AppContentAndPlot>
 
-        <!--{{pointsList}}
-        {{linearInterpolation}}-->
+    <template #header>
+      <AppHero title="Interpolación lineal" :padding="1"/>
+    </template>
 
-        <div v-if="interpolationLine" class="has-text-centered" style="padding-bottom: 10px">
-          <katex-element :expression="interpolationLine"/>
-        </div>
+    <template #content>
+      <AppPointsList v-model="pointsList" @update="updatePlot"/>
 
+      <!--{{pointsList}}
+      {{linearInterpolation}}-->
+
+      <div v-if="interpolationLine" class="has-text-centered" style="padding-bottom: 10px">
+        <katex-element :expression="interpolationLine"/>
       </div>
+    </template>
 
-      <div class="column">
-        <AppPlot name="least-squares" v-model="plot"></AppPlot>
-      </div>
-    </div>
-  </AppContentLayout>
+    <template #plot>
+      <AppPlot name="least-squares" v-model="plot"></AppPlot>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
-import AppHero from '@/components/AppHero.vue'
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
+import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppPointsList from '@/components/AppPointsList.vue'
 
@@ -33,7 +35,7 @@ import LinearInterpolation from '@/methods/LinearInterpolation'
 import {Point} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppHero, AppPlot, AppPointsList, AppContentLayout}
+  components: {AppContentAndPlot, AppHero, AppPlot, AppPointsList}
 })
 
 export default class LinearInterpolationPage extends Vue {
