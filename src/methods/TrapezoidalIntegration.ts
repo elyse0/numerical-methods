@@ -1,5 +1,5 @@
 import NumericalMethod, {IntegrationInterval} from '@/methods/NumericalMethod'
-import {EvalFunction, MathNode} from 'mathjs'
+import {EvalFunction} from 'mathjs'
 
 class TrapezoidalIntegration extends NumericalMethod {
 
@@ -18,7 +18,7 @@ class TrapezoidalIntegration extends NumericalMethod {
 
     static create(
         functionFx: string,
-        interval: IntegrationInterval,
+        interval: Partial<IntegrationInterval>,
         steps: number): TrapezoidalIntegration | null {
 
         const parsedFunction = this.getParsedFunction(functionFx)
@@ -27,6 +27,10 @@ class TrapezoidalIntegration extends NumericalMethod {
             return null
         }
         // FIXME: Verify interval and steps
+        if (!this.isIntegrationInterval(interval)) {
+            console.log("TrapezoidalIntegration: Integration interval invalid")
+            return null
+        }
         const integral = this.method(parsedFunction, interval, steps)
         if (!integral) {
             console.log("TrapezoidalIntegration: Error computing method")
