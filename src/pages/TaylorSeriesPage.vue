@@ -30,7 +30,7 @@
     </template>
 
     <template #plot>
-      <AppPlot name="taylor-series" v-model="plot"/>
+      <AppPlot name="taylor-series" v-model="plot" :callback="updatePlot"/>
     </template>
 
   </AppContentAndPlot>
