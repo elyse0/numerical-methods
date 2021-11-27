@@ -1,23 +1,27 @@
 <template>
-  <AppContentLayout>
-    <AppHero title="Interpolación por minimos cuadrados" :padding="1"/>
-    <div class="columns">
-      <div class="column">
-        <AppPointsList v-model="pointsList"/>
-        {{pointsList}}
-        {{isPointsListValid}}
-      </div>
-      <div class="column">
-        <AppPlot name="least-squares" v-model="plot"/>
-      </div>
-    </div>
-  </AppContentLayout>
+  <AppContentAndPlot>
+
+    <template #header>
+      <AppHero title="Interpolación por minimos cuadrados" :padding="1"/>
+    </template>
+
+    <template #content>
+      <AppPointsList v-model="pointsList"/>
+      {{pointsList}}
+      {{isPointsListValid}}
+    </template>
+
+    <template #plot>
+      <AppPlot name="least-squares" v-model="plot"/>
+    </template>
+
+  </AppContentAndPlot>
 </template>
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
 
-import AppContentLayout from '@/components/layout/AppContentLayout.vue'
+import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
 import AppPlot from '@/components/AppPlot.vue'
 import AppPointsList from '@/components/AppPointsList.vue'
@@ -26,7 +30,7 @@ import LeastSquaresInterpolation from '@/methods/LeastSquaresInterpolation'
 import {Point} from '@/methods/NumericalMethod'
 
 @Component({
-  components: {AppContentLayout, AppHero,  AppPlot, AppPointsList}
+  components: {AppContentAndPlot, AppHero,  AppPlot, AppPointsList}
 })
 
 export default class LeastSquaresPage extends Vue {
