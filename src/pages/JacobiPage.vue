@@ -1,5 +1,5 @@
 <template>
-  <AppContentAndPlot>
+  <AppContentAndPlot content-class="is-two-fifths">
 
     <template #header>
       <AppHero title="Método de Jacobi" :padding="1"/>
@@ -9,11 +9,12 @@
 
       Sistema de ecuaciones
       <AppRow>
-        <AppMatrix v-model="matrix"/>
+        <AppMatrix v-model="matrix" style="width: 25vw"/>
         <AppSpacer/>
         <AppMatrix :columns="1" :rows="3"
                    v-model="vector"
                    style="
+                   width: 9vw;
                    border-left: 3px solid #bbb;
                    padding-left: 20px;"
         />
@@ -96,10 +97,11 @@ export default class JacobiPage extends Vue {
     }
 
     let message: any = {}
-    message['plot'] =
-        `${this.getEquation(0)}
-        ${this.getEquation(1)}
-        ${this.getEquation(2)}`
+    const equation0 = this.getEquation(0)
+    const equation1 = this.getEquation(1)
+    const equation2 = this.getEquation(2)
+
+    message['plot'] = `${equation0 ? `${equation0}\n` : ""}${equation1 ? `${equation1}\n` : ""}${equation2 ? `${equation2}\n` : ""}`
 
     this.plot.postMessage(message, "*")
   }
@@ -112,8 +114,5 @@ export default class JacobiPage extends Vue {
 }
 </script>
 
-<style>
-div.b-numberinput.field.is-grouped {
-  width: 100px;
-}
+<style scoped>
 </style>
