@@ -1,5 +1,5 @@
 import NumericalMethod from '@/methods/NumericalMethod'
-import {abs} from 'mathjs'
+import {abs, matrix} from 'mathjs'
 
 const isColumnVector = (columnVector: Array<number | null>): columnVector is number[] => {
     if (columnVector.length < 2) {
@@ -101,7 +101,4 @@ class Jacobi extends NumericalMethod {
 }
 
 export default Jacobi
-/*
-const matrix: number[][] = [[17, -2, -3, 500], [-5, -21, -2, 200], [-5, -5, 22, 30]]
-
-Jacobi.method(matrix)*/
+export {isColumnVector, isSquaredMatrix}
