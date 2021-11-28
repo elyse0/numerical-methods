@@ -11,7 +11,7 @@
 <script>
     const elt = document.getElementById('calculator')
     const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
-    let functionFx = {id: "functionFx", latex: "", color: "#52c9dc"}
+    let functionFx = {id: "functionFx", latex: "", color: "#64b5f6"}
 
     let table = {id: "table1", type: "table"}
 
@@ -30,7 +30,7 @@
             let columns = []
             columns.push({latex: "x", values: message.data.table.x})
             columns.push({latex: "y",
-                color: "#3ede34",
+                color: "#f06292",
                 values: message.data.table.y})
             table["columns"] = columns
             calculator.setExpression(table)
