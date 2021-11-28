@@ -28,10 +28,11 @@
 
         <b-field :label="'Iteración ' + (selectedIteration) + '/' + (bisectionMethod.bisectionIterations.length)"
                  v-if="bisectionMethod.bisectionIterations.length !== 1">
-          <b-slider v-model="selectedIteration" :min="1" :max="bisectionMethod.bisectionIterations.length" ticks/>
+          <b-slider v-model="selectedIteration" :min="1" :max="bisectionMethod.bisectionIterations.length" ticks
+                    @input="updateGraph"/>
         </b-field>
         <br>
-        <AppBisectionIterationButtons :iteration="currentIteration" :precision="precision + 1"/>
+        <AppBisectionIterationButtons :iteration="currentIteration" :precision="precision"/>
       </div>
     </template>
 
@@ -81,8 +82,8 @@ export default class BisectionPage extends Vue {
     }
 
     return {
-      x: Bisection.round(this.bisectionMethod.root.x),
-      fx: Bisection.round(this.bisectionMethod.root.fx)
+      x: Bisection.round(this.bisectionMethod.root.x, this.precision),
+      fx: Bisection.round(this.bisectionMethod.root.fx, this.precision)
     }
   }
 
@@ -142,11 +143,6 @@ export default class BisectionPage extends Vue {
 
   @Watch("bisectionMethod")
   onBisectionMethod() {
-    this.updateGraph()
-  }
-
-  @Watch("currentIteration")
-  onCurrentIteration() {
     this.updateGraph()
   }
 
