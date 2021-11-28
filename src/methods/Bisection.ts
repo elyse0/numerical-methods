@@ -2,7 +2,7 @@ import NumericalMethod, {Root} from '@/methods/NumericalMethod'
 import {EvalFunction, sign, compare, sum, MathNode} from 'mathjs'
 
 interface BisectionInitialPoints {
-    p1 : number,
+    p1: number,
     p2: number
 }
 
@@ -40,7 +40,10 @@ class Bisection extends NumericalMethod {
         this.parsedFunction = parsedFunction
         this.bisectionIterations = bisectionIterations
         this.precision = precision
-        this.root = {x: bisectionIterations[bisectionIterations.length - 1].p3.x, fx: bisectionIterations[bisectionIterations.length - 1].p3.fx}
+        this.root = {
+            x: bisectionIterations[bisectionIterations.length - 1].p3.x,
+            fx: bisectionIterations[bisectionIterations.length - 1].p3.fx
+        }
     }
 
     static create(inputFunction: string, initialPoints: Partial<BisectionInitialPoints>, precision: number = 4): Bisection | null {
@@ -67,22 +70,13 @@ class Bisection extends NumericalMethod {
 
     static method(mathFunction: EvalFunction,
                   initialPoints: BisectionInitialPoints,
-                  precision: number = 4): BisectionIteration[] | null {
-
-        if (compare(initialPoints.p1, initialPoints.p2) >= 0) {
-            return null
-        }
+                  precision: number = 4): BisectionIteration[] {
 
         const functionValueAtP1 = Bisection.evaluate(mathFunction, initialPoints.p1)
         const functionValueAtP2 = Bisection.evaluate(mathFunction, initialPoints.p2)
 
-        if (functionValueAtP1 * functionValueAtP2 >= 0) {
-            // TODO: What should I return when it's zero
-            return null
-        }
-
         // Middle point
-        const p3 = sum(initialPoints.p1/2, initialPoints.p2/2)
+        const p3 = sum(initialPoints.p1 / 2, initialPoints.p2 / 2)
         const functionValueAtP3 = Bisection.evaluate(mathFunction, p3)
 
         const bisectionIteration: BisectionIteration = {
@@ -103,22 +97,21 @@ class Bisection extends NumericalMethod {
             }
         }
 
-        if (Bisection.isZero(bisectionIteration.p3.fx)){
+        if (Bisection.isZero(bisectionIteration.p3.fx)) {
             return [bisectionIteration]
         }
 
         const nextInterval = this.getNextInterval(bisectionIteration)
-
         return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision))
     }
 
     static iteration(mathFunction: EvalFunction,
                      initialPoints: BisectionInitialIterationPoints,
                      precision: number,
-                     iterationNumber: number = 0
+                     iterationNumber: number = 100,
     ): BisectionIteration[] {
 
-        const p3 = sum(initialPoints.p1.x/2, initialPoints.p2.x/2)
+        const p3 = sum(initialPoints.p1.x / 2, initialPoints.p2.x / 2)
         const functionValueAtP3 = Bisection.evaluate(mathFunction, p3)
 
         const bisectionIteration: BisectionIteration = {
@@ -131,35 +124,31 @@ class Bisection extends NumericalMethod {
             }
         }
 
-        if (Bisection.isZero(bisectionIteration.p3.fx, precision) || iterationNumber === 1000) {
+        if (Bisection.isZero(bisectionIteration.p3.fx, precision) || iterationNumber === 0) {
             return [bisectionIteration]
         }
 
         const nextInterval = this.getNextInterval(bisectionIteration)
-        return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision, iterationNumber++))
+        return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision, iterationNumber - 1))
     }
 
     static getNextInterval(bisectionIteration: BisectionIteration): BisectionInitialIterationPoints {
 
-        let positive: BisectionIterationPoint;
-        let negative: BisectionIterationPoint;
+        const points = [bisectionIteration.p1, bisectionIteration.p2, bisectionIteration.p3]
+        const sortedPoints = points.sort((a, b) => a.x - b.x)
 
-        if (bisectionIteration.p1.sign === -1){
-            negative = bisectionIteration.p1
-            positive = bisectionIteration.p2
-        } else {
-            negative = bisectionIteration.p2
-            positive = bisectionIteration.p1
+        for (let i = 0; i < sortedPoints.length - 1; i++) {
+            if (sortedPoints[i].sign !== sortedPoints[i + 1].sign) {
+                return {
+                    p1: sortedPoints[i],
+                    p2: sortedPoints[i + 1]
+                }
+            }
         }
-
-        if (bisectionIteration.p3.sign === -1){
-            return {p1: bisectionIteration.p3, p2: positive}
-        } else {
-            return {p1: negative, p2: bisectionIteration.p3}
-        }
+        throw Error
     }
 
-    static isIntervalValid(mathFunction: EvalFunction, initialPoints: Partial<BisectionInitialPoints>){
+    static isIntervalValid(mathFunction: EvalFunction, initialPoints: Partial<BisectionInitialPoints>): boolean {
 
         if (!isBisectionInitialPoints(initialPoints)) {
             console.log("Initial points object is invalid")
