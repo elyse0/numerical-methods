@@ -34,14 +34,14 @@ class TaylorSeries extends NumericalMethod {
         const derivativeFunctionFx = currentIteration === 0 ? functionFx : derivative(functionFx, "x")
         const derivativeEvaluated = this.evaluate(derivativeFunctionFx, 0)
 
-        const iteration = simplify(
+        const taylorIteration = simplify(
             `(${derivativeEvaluated}/${this.factorial(currentIteration)})*x^${currentIteration}`)
 
-        if (currentIteration === iterations) {
-            return [iteration.toTex()]
+        if (this.equal(currentIteration, iterations)) {
+            return [taylorIteration.toTex()]
         }
 
-        return [iteration.toTex()].concat(
+        return [taylorIteration.toTex()].concat(
             this.method(derivativeFunctionFx, iterations, currentIteration + 1))
     }
 }
