@@ -19,18 +19,26 @@
         />
       </AppRow>
 
-      {{jacobi}}
+      <div v-if="linearSystemSolution">
+        <katex-element :expression="'x='+linearSystemSolution[0].toFixed(4)"/>
+        <AppSpacer/>
+        <katex-element :expression="'y='+linearSystemSolution[1].toFixed(4)"/>
+        <AppSpacer/>
+        <katex-element :expression="'z='+linearSystemSolution[2].toFixed(4)"/>
+      </div>
+
+      <b-button @click="update3dPlot">3D Plot</b-button>
     </template>
 
     <template #plot>
-      <AppPlot name="jacobi" v-model="plot"/>
+      <AppPlot name="jacobi" v-model="plot" :callback="update3dPlot"/>
     </template>
 
   </AppContentAndPlot>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator'
+import {Component, Vue, Watch} from 'vue-property-decorator'
 
 import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
@@ -47,15 +55,58 @@ import Jacobi from '@/methods/Jacobi'
 
 export default class JacobiPage extends Vue {
 
-  matrix: number[][] = [[17, -2, -3], [-5, -21, -2], [-5, -5, 22]]
-  vector: number[][] = [[500], [200], [30]]
+  matrix: Array<Array<number | null>> = [[17, -2, -3], [-5, -21, -2], [-5, -5, 22]]
+  vector: Array<Array<number | null>> = [[5], [2], [3]]
 
-  selectedIteration: number = 1
   plot: Window | null = null
 
   get jacobi(): Jacobi | null {
 
     return Jacobi.create(this.matrix, this.vector.flat(1))
+  }
+
+  get linearSystemSolution(): number[] | null{
+    if (!this.jacobi) {
+      return null
+    }
+
+    return this.jacobi.iterations[this.jacobi.iterations.length - 1]
+  }
+
+  getEquation(row: number): string | null {
+    const matrixRow = this.matrix[row]
+
+    for (let column = 0; column < matrixRow.length; column++) {
+      if (typeof matrixRow[column] !== 'number') {
+        return null
+      }
+    }
+
+    const columnVectorValue = this.vector.flat(1)[row]
+    if (typeof columnVectorValue !== "number") {
+      return null
+    }
+
+    return `${matrixRow[0]}x+${matrixRow[1]}y+${matrixRow[2]}z=${columnVectorValue}`
+  }
+
+  update3dPlot() {
+    if (!this.plot) {
+      return
+    }
+
+    let message: any = {}
+    message['plot'] =
+        `${this.getEquation(0)}
+        ${this.getEquation(1)}
+        ${this.getEquation(2)}`
+
+    this.plot.postMessage(message, "*")
+  }
+
+  @Watch("jacobi")
+  onJacobi() {
+    this.update3dPlot()
   }
 
 }
