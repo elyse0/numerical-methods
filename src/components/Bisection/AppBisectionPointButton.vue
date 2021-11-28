@@ -1,7 +1,14 @@
 <template>
   <div>
     <b-tooltip position="is-bottom" type="is-light">
-      <b-button :label="label" :type="buttonType" outlined expanded/>
+      <b-button  :type="buttonType" outlined expanded>
+        <AppRow>
+          <b>x: </b> {{pointUsingPrecision.x}}
+        </AppRow>
+        <AppRow>
+          <b>fx: </b> {{pointUsingPrecision.fx}}
+        </AppRow>
+      </b-button>
       <template v-slot:content>
         <p><b>fx: </b> {{point.fx}}</p>
       </template>
@@ -10,33 +17,43 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import {BisectionIterationPoint} from '@/methods/Bisection'
+import {Component, Prop, Vue} from 'vue-property-decorator'
 
-export default Vue.extend({
-  name: "AppBisectionPointButton",
-  props: {
-    point: {type: Object as () => BisectionIterationPoint},
-    precision: {type: Number}
-  },
-  computed: {
-    label(): String {
-      return "x: " + parseFloat(this.point.x.toString()).toFixed(this.precision)
-    },
-    buttonType(): String {
-      if (!this.point)
-        return ""
+import AppRow from '@/components/common/AppRow.vue'
 
-      if (this.point.sign === 1)
-        return "is-danger"
+import {Bisection, BisectionIterationPoint} from '@/methods/Bisection'
 
-      if (this.point.sign === -1)
-        return "is-info"
+@Component({
+  components: {AppRow}
+})
 
-      return "is-success"
+export default class AppBisectionPointButton extends Vue {
+
+  @Prop({required: true, type: Object as () => BisectionIterationPoint}) point!: BisectionIterationPoint
+  @Prop({default: 4, type: Number}) precision!: number
+
+  get pointUsingPrecision(): object {
+
+    return {
+      x: Bisection.round(this.point.x, this.precision).toString(),
+      fx: Bisection.round(this.point.fx, this.precision).toString()
     }
   }
-})
+
+  get buttonType(): string {
+    if (!this.point)
+      return ""
+
+    if (this.point.sign === 1)
+      return "is-danger"
+
+    if (this.point.sign === -1)
+      return "is-info"
+
+    return "is-success"
+  }
+}
+
 </script>
 
 <style scoped>
