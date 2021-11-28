@@ -63,7 +63,7 @@ export default class AppNumberInput extends Vue {
 
   @Emit()
   input() {
-    return true
+    return null
   }
 }
 </script>
