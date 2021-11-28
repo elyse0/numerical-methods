@@ -5,6 +5,7 @@
                    :min="min"
                    :max="max"
                    :controls="false"
+                   :lazy="lazy"
                    @input="input"
                    expanded/>
   </b-field>
@@ -23,6 +24,7 @@ export default class AppNumberInput extends Vue {
   @Prop({default: 0.0001}) readonly step!: number
   @Prop({default: null}) readonly min!: number | null
   @Prop({default: null}) readonly max!: number | null
+  @Prop({default: false, type: Boolean}) readonly lazy!: boolean
 
   unsafeNumber: number | null | boolean = null
 
