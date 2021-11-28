@@ -13,11 +13,9 @@
     const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
     let functionX = {id: "functionX", latex: "x", lineOpacity: 0.35, lineWidth: 1, color: "#7f7f7f"}
     calculator.setExpression(functionX)
-    /*calculator.setExpression({id: "functionFx", latex: "x^2-2*x-3"})
-    calculator.setExpression({id: "functionGx", latex: "(2*x+3)^{1/2}"})*/
 
-    let functionFx = {id: "functionFx", latex: "", color: "#52c9dc"}
-    let functionGx = {id: "functionGx", latex: "", color: "#f994df"}
+    let functionFx = {id: "functionFx", latex: "", color: "#64b5f6"}
+    let functionGx = {id: "functionGx", latex: "", color: "#f06292"}
     let table = {id: "table1", type: "table"}
 
     const receiveDataFromWeb =  (message) => {
@@ -42,7 +40,7 @@
             columns.push({latex: "y",
                 lines: true,
                 lineStyle: Desmos.Styles.DASHED,
-                color: "#3ede34",
+                color: "#4db6ac",
                 values: message.data.table.y})
             table["columns"] = columns
             calculator.setExpression(table)
