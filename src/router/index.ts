@@ -1,4 +1,5 @@
 import FixedPointPage from '@/pages/FixedPointPage.vue'
+import GettingStarted from '@/pages/GettingStarted.vue'
 import JacobiPage from '@/pages/JacobiPage.vue'
 import LinearInterpolationPage from '@/pages/LinearInterpolationPage.vue'
 import NewtonRaphsonPage from '@/pages/NewtonRaphsonPage.vue'
@@ -24,6 +25,14 @@ const routes: Array<RouteConfig> = [
         component: Mainpage,
         meta: {
             title: "Métodos numéricos"
+        }
+    },
+    {
+        path: "/getting-started",
+        name: "Getting started",
+        component: GettingStarted,
+        meta: {
+            title: "Guía de inicio"
         }
     },
     {
