@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <script src="https://www.geogebra.org/apps/deployggb.js"></script>
 </head>
 <body>
-<div id="calculator" style="width: 600px; height: 400px;"></div>
+<div id="ggb-element"></div>
 
 <script>
-    const elt = document.getElementById('calculator')
-    const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
-    let functionX = {id: "functionX", latex: "x", lineOpacity: 0.35, lineWidth: 1, color: "#7f7f7f"}
-    calculator.setExpression(functionX)
-    /*calculator.setExpression({id: "functionFx", latex: "x^2-2*x-3"})
-    calculator.setExpression({id: "functionGx", latex: "(2*x+3)^{1/2}"})*/
+    let params = {"id": "app1", "appName": "3d", "width": 800, "height": 500, "showToolBar": false, "showAlgebraInput": false, "showMenuBar": false };
+    let applet = new GGBApplet(params, true);
+    window.addEventListener("load", function() {
+        applet.inject('ggb-element');
+    });
+
+    const values =
+        `17x-2y-3z=10
+        -5x-21y-2z=20
+        -5x-5y+22z=30`
 
     const receiveDataFromWeb =  (message) => {
 
-        /*if (message.data.functionFx !== undefined) {
-            functionFx.latex = message.data.functionFx
-            calculator.setExpression(functionFx)
-        } else {
-            calculator.removeExpression(functionFx)
-        }*/
+        app1.newConstruction()
+
+        if (message.data.plot !== undefined) {
+            app1.evalCommand(message.data.plot)
+            app1.refreshViews()
+        }
     }
 
     window.addEventListener("message", receiveDataFromWeb);
