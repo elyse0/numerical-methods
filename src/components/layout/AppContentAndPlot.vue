@@ -3,7 +3,7 @@
     <slot name="header"/>
 
     <div class="columns">
-      <div class="column">
+      <div :class="`column ${contentClass}`">
         <slot name="content"/>
       </div>
       <div class="column">
@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import AppContentLayout from '@/components/layout/AppContentLayout.vue'
-import {Component, Vue} from 'vue-property-decorator'
+import {Component, Prop, Vue} from 'vue-property-decorator'
 
 @Component({
   components: {AppContentLayout}
@@ -24,6 +24,7 @@ import {Component, Vue} from 'vue-property-decorator'
 
 export default class AppContentAndPlot extends Vue {
 
+  @Prop({default: ""}) readonly contentClass!: string
 }
 </script>
 
