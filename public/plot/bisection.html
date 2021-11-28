@@ -11,10 +11,10 @@
 <script>
     const elt = document.getElementById('calculator')
     const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
-    let mathFunction = {id: "function", latex: ""}
-    let p1 = {id: "p1", latex: "", color: ""}
-    let p2 = {id: "p2", latex: "", color: ""}
-    let p3 = {id: "p3", latex: "", color: ""}
+    let mathFunction = {id: "function", latex: "", color: "#4db6ac"}
+    let tableP1 = {id: "tableP1", type: "table"}
+    let tableP2 = {id: "tableP2", type: "table"}
+    let tableP3 = {id: "tableP3", type: "table"}
 
     const receiveDataFromWeb =  (message) => {
 
@@ -26,43 +26,52 @@
         }
 
         if (message.data.p1 === undefined) {
-            calculator.removeExpression(p1)
+            calculator.removeExpression(tableP1)
         } else {
-            p1.latex = `(${message.data.p1.x.toFixed(10)},0)`
-            p1.color = getColor(message.data.p1.fx)
-            calculator.setExpression(p1)
+            calculator.setExpression(getTablePoints(tableP1, message.data.p1))
         }
 
         if (message.data.p2 === undefined) {
-            calculator.removeExpression(p2)
+            calculator.removeExpression(tableP2)
         } else {
-            p2.latex = `(${message.data.p2.x.toFixed(10)},0)`
-            p2.color = getColor(message.data.p2.fx)
-            calculator.setExpression(p2);
+            calculator.setExpression(getTablePoints(tableP2, message.data.p2))
         }
 
         if (message.data.p3 === undefined) {
-            calculator.removeExpression(p3)
+            calculator.removeExpression(tableP3)
         } else {
-            p3.latex = `(${message.data.p3.x.toFixed(10)},0)`
-            p3.color = getColor(message.data.p3.fx)
-            calculator.setExpression(p3);
+            calculator.setExpression(getTablePoints(tableP3, message.data.p3));
         }
     }
 
     const getColor = function (value) {
         if (value > 0)
-            return "#c74440"
+            return "#f06292"
 
         if (value < 0)
-            return "#2d70b3"
+            return "#64b5f6"
 
-        return "#388c46"
+        return "#66bb6a"
+    }
+
+    const getTablePoints = function (table, point) {
+
+        const x = point.x.toFixed(10)
+        const fx = point.fx.toFixed(10)
+
+        let columns = []
+        columns.push({latex: "x", values: [x, x]})
+        columns.push({latex: "y",
+            lines: true,
+            lineStyle: Desmos.Styles.DASHED,
+            color: getColor(point.fx),
+            values: [0, fx]})
+
+        table["columns"] = columns
+        return table
     }
 
     window.addEventListener("message", receiveDataFromWeb);
-
-
 </script>
 </body>
 </html>
