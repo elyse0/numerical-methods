@@ -22,7 +22,10 @@ class FixedPoint extends NumericalMethod {
         this.parsedFunctionGx = parsedFunctionGx
         this.iterations = fixedPointIterations
         this.precision = precision
-        this.root = {x: fixedPointIterations[fixedPointIterations.length - 1].x, fx: fixedPointIterations[fixedPointIterations.length - 1].fx}
+        this.root = {
+            x: fixedPointIterations[fixedPointIterations.length - 1].x,
+            fx: fixedPointIterations[fixedPointIterations.length - 1].fx
+        }
     }
 
     static create(inputFunctionFx: string, inputFunctionGx: string, initialPoint: number, precision: number = 4) {
@@ -53,7 +56,7 @@ class FixedPoint extends NumericalMethod {
                   initialPoint: number,
                   precision: number = 4,
                   recursionLimit: number = this.recursionLimit
-    ): FixedPointIteration[] | null {
+    ): FixedPointIteration[] {
 
         this.verifyRecursionLimit(recursionLimit)
 
@@ -66,18 +69,12 @@ class FixedPoint extends NumericalMethod {
             gx: functionValueGx
         }
 
-        if (FixedPoint.isZero(fixedPointIteration.fx, precision)){
+        if (FixedPoint.isZero(fixedPointIteration.fx, precision)) {
             return [fixedPointIteration]
         }
 
-        const nextIteration = FixedPoint.method(
-            mathFunctionFx, mathFunctionGx, fixedPointIteration.gx, precision)
-
-        if (!nextIteration) {
-            return null
-        }
-
-        return [fixedPointIteration].concat(nextIteration)
+        return [fixedPointIteration].concat(FixedPoint.method(
+            mathFunctionFx, mathFunctionGx, fixedPointIteration.gx, precision, recursionLimit - 1))
     }
 }
 
