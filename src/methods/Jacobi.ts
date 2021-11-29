@@ -64,7 +64,15 @@ class Jacobi extends NumericalMethod {
         }
     }
 
-    static method(squaredMatrix: Array<Array<number>>, columnVector: number[], precision: number = 4, initialValues: number[]): number[][]{
+    static method(
+        squaredMatrix: Array<Array<number>>,
+        columnVector: number[],
+        precision: number = 4,
+        initialValues: number[],
+        recursionLimit: number = this.recursionLimit
+    ): number[][]{
+
+        this.verifyRecursionLimit(recursionLimit)
 
         const x0 = initialValues[0]
         const y0 = initialValues[1]
