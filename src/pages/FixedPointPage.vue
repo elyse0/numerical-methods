@@ -85,12 +85,7 @@ export default class FixedPointPage extends Vue {
 
   get fixedPoint(): FixedPoint | null {
 
-    if (this.parsedFunctionFx && this.parsedFunctionGx && this.initialPoint){
-      return FixedPoint.create(this.inputFunctionFx, this.inputFunctionGx, this.initialPoint, this.precision)
-    }
-
-    console.log("fixed point is null")
-    return null
+    return FixedPoint.create(this.inputFunctionFx, this.inputFunctionGx, this.initialPoint, this.precision)
   }
 
   get root(): Root | null {
