@@ -72,8 +72,6 @@ class LinearInterpolation extends NumericalMethod {
         }
 
         const standardDeviation = LinearInterpolation.standardDeviation(slopesBetweenPoints)
-        console.log(standardDeviation)
-
         return standardDeviation < 0.3
     }
 }
