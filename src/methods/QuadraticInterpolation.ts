@@ -14,25 +14,25 @@ class QuadraticInterpolation extends NumericalMethod {
         this.interpolationFunction = interpolationFunction
     }
 
-    public static create(points: Point[]): QuadraticInterpolation | null {
-        const quadraticInterpolation = this.method(points)
-
-        if (!quadraticInterpolation) {
+    public static create(points: Partial<Point>[]): QuadraticInterpolation | null {
+        if (points.length !== 3) {
+            console.log("QuadraticInterpolation: Points must be three")
             return null
         }
-
-        return new QuadraticInterpolation(quadraticInterpolation.interpolationFunction)
+        if (!this.isPointsListValid(points)) {
+            console.log("QuadraticInterpolation: Points array is not valid")
+            return null
+        }
+        try {
+            const quadraticInterpolationResult = this.method(points)
+            return new QuadraticInterpolation(quadraticInterpolationResult.interpolationFunction)
+        } catch (e) {
+            console.log("QuadraticInterpolation: Critical error when computing method")
+            return null
+        }
     }
 
-    public static method(points: Point[]): QuadraticInterpolationResult | null {
-        if (points.length !== 3) {
-            return null
-        }
-
-        if (!this.isPointsListValid(points)) {
-            return null
-        }
-
+    public static method(points: Point[]): QuadraticInterpolationResult{
         //  y = ax^2 + bx + c
         const matrix = points.map((point) => [(point.x * point.x), point.x, 1])
         const columnVector = points.map((point) => point.y)
@@ -45,7 +45,6 @@ class QuadraticInterpolation extends NumericalMethod {
         const c = this.getNumberStringMultipliedBySign(flatSystemSolution[2])
 
         const interpolationFunction = this.getFxEquation(`${a}*x^2${b}*x${c}`)
-
         return {interpolationFunction}
     }
 }
