@@ -28,53 +28,56 @@ class FixedPoint extends NumericalMethod {
     static create(inputFunctionFx: string, inputFunctionGx: string, initialPoint: number, precision: number = 4) {
         const parsedFunctionFx = FixedPoint.getParsedFunction(inputFunctionFx)
         if (!parsedFunctionFx) {
-            console.log("Error parsing function fx")
+            console.log("FixedPoint: Error parsing function fx")
             return null
         }
         const parsedFunctionGx = FixedPoint.getParsedFunction(inputFunctionGx)
         if (!parsedFunctionGx) {
-            console.log("Error parsing function gx")
+            console.log("FixedPoint: Error parsing function gx")
             return null
         }
-        const fixedPointIterations = FixedPoint.method(parsedFunctionFx.compile(), parsedFunctionGx.compile(), initialPoint, precision)
-        if (!fixedPointIterations) {
-            console.log("Error computing iterations")
+        try {
+            const fixedPointIterations = FixedPoint.method(parsedFunctionFx.compile(), parsedFunctionGx.compile(), initialPoint, precision)
+            if (!fixedPointIterations) {
+                console.log("FixedPoint: Error computing iterations")
+                return null
+            }
+            return new FixedPoint(parsedFunctionFx, parsedFunctionGx, fixedPointIterations, precision)
+        } catch (e) {
             return null
         }
-        return new FixedPoint(parsedFunctionFx, parsedFunctionGx, fixedPointIterations, precision)
     }
 
     static method(mathFunctionFx: EvalFunction,
                   mathFunctionGx: EvalFunction,
                   initialPoint: number,
-                  precision: number = 4): FixedPointIteration[] | null {
+                  precision: number = 4,
+                  recursionLimit: number = this.recursionLimit
+    ): FixedPointIteration[] | null {
 
-        try {
-            const functionValueFx = FixedPoint.evaluate(mathFunctionFx, initialPoint)
-            const functionValueGx = FixedPoint.evaluate(mathFunctionGx, initialPoint)
+        this.verifyRecursionLimit(recursionLimit)
 
-            const fixedPointIteration: FixedPointIteration = {
-                x: initialPoint,
-                fx: functionValueFx,
-                gx: functionValueGx
-            }
+        const functionValueFx = FixedPoint.evaluate(mathFunctionFx, initialPoint)
+        const functionValueGx = FixedPoint.evaluate(mathFunctionGx, initialPoint)
 
-            if (FixedPoint.isZero(fixedPointIteration.fx, precision)){
-                return [fixedPointIteration]
-            }
+        const fixedPointIteration: FixedPointIteration = {
+            x: initialPoint,
+            fx: functionValueFx,
+            gx: functionValueGx
+        }
 
-            const nextIteration = FixedPoint.method(
-                mathFunctionFx, mathFunctionGx, fixedPointIteration.gx, precision)
+        if (FixedPoint.isZero(fixedPointIteration.fx, precision)){
+            return [fixedPointIteration]
+        }
 
-            if (!nextIteration) {
-                return null
-            }
+        const nextIteration = FixedPoint.method(
+            mathFunctionFx, mathFunctionGx, fixedPointIteration.gx, precision)
 
-            return [fixedPointIteration].concat(nextIteration)
-        } catch (e) {
-            console.log(e)
+        if (!nextIteration) {
             return null
         }
+
+        return [fixedPointIteration].concat(nextIteration)
     }
 }
 
