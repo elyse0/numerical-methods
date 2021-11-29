@@ -51,10 +51,6 @@ class LeastSquaresInterpolation extends NumericalMethod {
         const correlationCoefficient = ((numberOfPoints * xySum) - (xSum * ySum))
             /(sqrt(((numberOfPoints * xSquaredSum) - (xSum * xSum))) * sqrt(((numberOfPoints * ySquaredSum) - (ySum * ySum))))
 
-        console.log(slope)
-        console.log(yIntercept)
-        console.log(correlationCoefficient)
-
         return {slope, yIntercept, correlationCoefficient}
     }
 }
