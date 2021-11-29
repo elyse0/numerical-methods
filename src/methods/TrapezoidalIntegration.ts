@@ -31,18 +31,19 @@ class TrapezoidalIntegration extends NumericalMethod {
             console.log("TrapezoidalIntegration: Integration interval invalid")
             return null
         }
-        const integral = this.method(parsedFunction, interval, steps)
-        if (!integral) {
-            console.log("TrapezoidalIntegration: Error computing method")
+        try {
+            const integral = this.method(parsedFunction, interval, steps)
+            const functionFxTex = this.getFxEquation(parsedFunction.toString())
+            const integralFunction = this.getFxIntegral(functionFx, interval)
+            const integrationInterval = this.getIntegrationIntervalString(interval)
+            return new TrapezoidalIntegration(integral, functionFxTex, integralFunction, integrationInterval)
+        } catch (e) {
+            console.log("TrapezoidalIntegration: Critical error when computing method")
             return null
         }
-        const functionFxTex = this.getFxEquation(parsedFunction.toString())
-        const integralFunction = this.getFxIntegral(functionFx, interval)
-        const integrationInterval = this.getIntegrationIntervalString(interval)
-        return new TrapezoidalIntegration(integral, functionFxTex, integralFunction, integrationInterval)
     }
 
-    static method(functionFx: EvalFunction, interval: IntegrationInterval, steps: number): number | null {
+    static method(functionFx: EvalFunction, interval: IntegrationInterval, steps: number): number{
         const a = interval.x0
         const b = interval.x1
         const subintervalWidth = (b - a) / steps
