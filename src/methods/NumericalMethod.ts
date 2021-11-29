@@ -22,6 +22,14 @@ enum Sign {
 
 abstract class NumericalMethod {
 
+    static recursionLimit: number = 100
+
+    static verifyRecursionLimit(recursionLimit: number) {
+        if (recursionLimit === 0) {
+            throw Error("Recursion limit")
+        }
+    }
+
     static getParsedFunction(inputFunction: string): MathNode | null {
         try {
             const parsedFunction = parse(inputFunction)
@@ -111,7 +119,7 @@ abstract class NumericalMethod {
         return typeof point.x === 'number' && typeof point.y === "number"
     }
 
-    static isPointsListValid(pointsList: Partial<Point>[]): boolean {
+    static isPointsListValid(pointsList: Partial<Point>[]): pointsList is Point[] {
         if (!pointsList.length) {
             return false
         }
