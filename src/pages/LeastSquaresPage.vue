@@ -36,12 +36,7 @@ import {Point} from '@/methods/NumericalMethod'
 export default class LeastSquaresPage extends Vue {
 
   pointsList: Partial<Point>[] = [{x: 1, y: 0.5}, {x: 3, y: 4}, {x: 4, y: 2}]
-  selectedIteration: number = 1
   plot: Window | null = null
-
-  isPoint(point: Partial<Point>): point is Point {
-    return typeof point.x === 'number' && typeof point.y === "number"
-  }
 
   get leastSquaresInterpolation(): LeastSquaresInterpolation | null {
     if (!this.isPointsListValid) {
@@ -70,7 +65,7 @@ export default class LeastSquaresPage extends Vue {
       let yValues: number[] = []
 
       this.pointsList.forEach((point) => {
-        if (this.isPoint(point)) {
+        if (LeastSquaresInterpolation.isPoint(point)) {
           xValues.push(point.x)
           yValues.push(point.y)
         }
