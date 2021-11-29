@@ -19,6 +19,8 @@ const isSquaredMatrix = (squaredMatrix: Array<Array<number | null>>, size: numbe
     for (let row = 0; row < size; row++) {
         for (let column = 0; column < size; column++) {
             try {
+                console.log(squaredMatrix[row][column])
+                console.log(typeof squaredMatrix[row][column])
                 if (typeof squaredMatrix[row][column] !== 'number') {
                     return false
                 }
@@ -56,7 +58,6 @@ class Jacobi extends NumericalMethod {
         const initialValues = new Array(size).fill(0)
         try{
             const iterations = this.method(squaredMatrix, columnVector, precision, initialValues)
-            console.log(iterations)
             return new Jacobi(iterations)
         } catch (e) {
             console.log("Jacobi: Error computing method")
