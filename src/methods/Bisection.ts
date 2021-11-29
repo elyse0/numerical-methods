@@ -108,8 +108,9 @@ class Bisection extends NumericalMethod {
     static iteration(mathFunction: EvalFunction,
                      initialPoints: BisectionInitialIterationPoints,
                      precision: number,
-                     iterationNumber: number = 100,
+                     recursionLimit: number = this.recursionLimit,
     ): BisectionIteration[] {
+        this.verifyRecursionLimit(recursionLimit)
 
         const p3 = sum(initialPoints.p1.x / 2, initialPoints.p2.x / 2)
         const functionValueAtP3 = Bisection.evaluate(mathFunction, p3)
@@ -124,12 +125,12 @@ class Bisection extends NumericalMethod {
             }
         }
 
-        if (Bisection.isZero(bisectionIteration.p3.fx, precision) || iterationNumber === 0) {
+        if (Bisection.isZero(bisectionIteration.p3.fx, precision)) {
             return [bisectionIteration]
         }
 
         const nextInterval = this.getNextInterval(bisectionIteration)
-        return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision, iterationNumber - 1))
+        return [bisectionIteration].concat(this.iteration(mathFunction, nextInterval, precision, recursionLimit - 1))
     }
 
     static getNextInterval(bisectionIteration: BisectionIteration): BisectionInitialIterationPoints {
