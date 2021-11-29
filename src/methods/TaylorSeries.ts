@@ -29,7 +29,14 @@ class TaylorSeries extends NumericalMethod {
         return new TaylorSeries(taylorIterations)
     }
 
-    public static method(functionFx: MathNode, iterations: number, currentIteration: number = 0): string[] {
+    public static method(
+        functionFx: MathNode,
+        iterations: number,
+        currentIteration: number = 0,
+        recursionLimit: number = this.recursionLimit
+    ): string[] {
+
+        this.verifyRecursionLimit(recursionLimit)
 
         const derivativeFunctionFx = currentIteration === 0 ? functionFx : derivative(functionFx, "x")
         const derivativeEvaluated = this.evaluate(derivativeFunctionFx, 0)
@@ -42,7 +49,7 @@ class TaylorSeries extends NumericalMethod {
         }
 
         return [taylorIteration.toTex()].concat(
-            this.method(derivativeFunctionFx, iterations, currentIteration + 1))
+            this.method(derivativeFunctionFx, iterations, currentIteration + 1, recursionLimit - 1))
     }
 }
 
