@@ -28,7 +28,7 @@ export default class AppMatrix extends Vue {
 
   @Watch("matrix")
   onMatrix() {
-    console.log(this.matrix)
+    //console.log(this.matrix)
   }
 }
 </script>
