@@ -105,7 +105,7 @@ class Jacobi extends NumericalMethod {
             return [iteration]
         }
 
-        return [iteration].concat(this.method(squaredMatrix, columnVector, precision, iteration))
+        return [iteration].concat(this.method(squaredMatrix, columnVector, precision, iteration, recursionLimit - 1))
     }
 }
 
