@@ -33,50 +33,48 @@ class NewtonRaphson extends NumericalMethod {
             console.log("Error parsing function fx")
             return null
         }
-        const newtonRaphsonIterations = NewtonRaphson.method(parsedFunctionFx, initialPoint, precision)
-        if (!newtonRaphsonIterations) {
-            console.log("Error computing iterations")
+        try {
+            const newtonRaphsonIterations = NewtonRaphson.method(parsedFunctionFx, initialPoint, precision)
+            if (!newtonRaphsonIterations) {
+                console.log("Error computing iterations")
+                return null
+            }
+            return new NewtonRaphson(parsedFunctionFx, newtonRaphsonIterations, precision)
+        } catch (e) {
+            console.log("Critical error when computing iterations")
             return null
         }
-        return new NewtonRaphson(parsedFunctionFx, newtonRaphsonIterations, precision)
     }
 
     static method(mathFunctionFx: MathNode,
                   initialPoint: number,
-                  precision: number = 4): NewtonRaphsonIterations[] | null {
-        try {
-            const derivativeFunctionFx = derivative(mathFunctionFx, "x")
+                  precision: number = 4,
+                  recursionLimit: number = this.recursionLimit
+    ): NewtonRaphsonIterations[] {
+        this.verifyRecursionLimit(recursionLimit)
 
-            const functionValueFx = NewtonRaphson.evaluate(mathFunctionFx.compile(), initialPoint)
-            const derivativeValueFx = NewtonRaphson.evaluate(derivativeFunctionFx.compile(), initialPoint)
+        const derivativeFunctionFx = derivative(mathFunctionFx, "x")
 
-            const newApproximation = initialPoint - (functionValueFx / derivativeValueFx)
-            const iteration = {
-                x: initialPoint, fx: functionValueFx, dfx: derivativeValueFx, approximation: newApproximation
-            }
-            const functionValueFxNewIteration = NewtonRaphson.evaluate(mathFunctionFx.compile(), newApproximation)
-            console.log("Iteration: " + newApproximation)
+        const functionValueFx = NewtonRaphson.evaluate(mathFunctionFx.compile(), initialPoint)
+        const derivativeValueFx = NewtonRaphson.evaluate(derivativeFunctionFx.compile(), initialPoint)
 
-            if (NewtonRaphson.isZero(functionValueFxNewIteration, precision)) {
-                return [iteration].concat([{
-                    x: newApproximation,
-                    fx: NewtonRaphson.evaluate(mathFunctionFx.compile(), newApproximation),
-                    dfx: NewtonRaphson.evaluate(derivativeFunctionFx.compile(), newApproximation),
-                    approximation: 0
-                }])
-            }
-
-            const nextIteration = NewtonRaphson.method(mathFunctionFx, newApproximation, precision)
-
-            if (!nextIteration) {
-                return null
-            }
-
-            return [iteration].concat(nextIteration)
-        } catch (e) {
-            console.log(e)
-            return null
+        const newApproximation = initialPoint - (functionValueFx / derivativeValueFx)
+        const iteration = {
+            x: initialPoint, fx: functionValueFx, dfx: derivativeValueFx, approximation: newApproximation
         }
+        const functionValueFxNewIteration = NewtonRaphson.evaluate(mathFunctionFx.compile(), newApproximation)
+
+        if (NewtonRaphson.isZero(functionValueFxNewIteration, precision)) {
+            return [iteration].concat([{
+                x: newApproximation,
+                fx: NewtonRaphson.evaluate(mathFunctionFx.compile(), newApproximation),
+                dfx: NewtonRaphson.evaluate(derivativeFunctionFx.compile(), newApproximation),
+                approximation: 0
+            }])
+        }
+
+        return [iteration].concat(
+            NewtonRaphson.method(mathFunctionFx, newApproximation, precision, recursionLimit - 1))
     }
 }
 
