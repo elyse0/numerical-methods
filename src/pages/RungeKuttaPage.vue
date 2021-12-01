@@ -7,8 +7,11 @@
 
     <template #content>
 
-      <b-field label="Integral" label-position="inside">
-        <b-input v-model="inputFunction"/>
+      <b-field label="Ecuación diferencial (ODE)" label-position="inside">
+        <b-input v-model="differentialEquation"/>
+      </b-field>
+      <b-field label="Solución de la ODE" label-position="inside">
+        <b-input v-model="solutionODE" @input="updatePlot"/>
       </b-field>
 
       <b>Condiciones iniciales</b>
@@ -17,6 +20,13 @@
         <AppNumberInput label="y" v-model="initialConditions.y" @input="updatePlot"/>
         <AppNumberInput label="Tamaño de paso (h)" v-model="stepSize" :min="0.0001" :max="100" @input="updatePlot"/>
       </b-field>
+
+      <div v-if="rungeKutta">
+        <div class="has-text-centered">
+          <katex-element style="display: block"
+                         :expression="`\\frac{\\text{d}y}{\\text{d}x} = ${rungeKutta.differentialEquation.toTex()}`"/>
+        </div>
+      </div>
 
       <div>
         Iteraciones:
@@ -34,7 +44,8 @@
 
 <script lang="ts">
 import {Point} from '@/methods/NumericalMethod'
-import {Component, Vue} from 'vue-property-decorator'
+import {MathNode} from 'mathjs'
+import {Component, Vue, Watch} from 'vue-property-decorator'
 
 import AppContentAndPlot from '@/components/layout/AppContentAndPlot.vue'
 import AppHero from '@/components/AppHero.vue'
@@ -49,7 +60,8 @@ import RungeKutta from '@/methods/RungeKutta'
 
 export default class RungeKuttaPage extends Vue {
 
-  inputFunction: string = "x*y^(1/2)"
+  differentialEquation: string = "x*y^(1/2)"
+  solutionODE: string = "(1/16)*(x^2+7)^2"
   initialConditions: Partial<Point> = {x: 1, y: 4}
   stepSize: number = 0.2
 
@@ -67,7 +79,12 @@ export default class RungeKuttaPage extends Vue {
 
   get rungeKutta(): RungeKutta | null {
 
-    return RungeKutta.create(this.inputFunction, this.initialConditions, this.stepSize)
+    return RungeKutta.create(this.differentialEquation, this.initialConditions, this.stepSize)
+  }
+
+  get parsedSolutionODE(): MathNode | null {
+
+    return RungeKutta.getParsedFunction(this.solutionODE)
   }
 
   get tableContent(): object[] | null {
@@ -96,7 +113,29 @@ export default class RungeKuttaPage extends Vue {
     }
 
     let message: any = {}
+
+    if (this.parsedSolutionODE) {
+      message["functionFx"] = this.parsedSolutionODE.toTex()
+    }
+
+    if (this.rungeKutta) {
+      //message['functionFx'] = this.rungeKutta
+      let xValues: number[] = []
+      let yValues: number[] = []
+
+      this.rungeKutta.iterations.forEach((iteration) => {
+        xValues.push(iteration.x)
+        yValues.push(iteration.y)
+      })
+
+      message["table"] = {x: xValues, y: yValues}
+    }
     this.plot.postMessage(message, "*")
+  }
+
+  @Watch("rungeKutta")
+  onRungeKutta() {
+    this.updatePlot()
   }
 
 }
