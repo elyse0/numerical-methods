@@ -1,5 +1,5 @@
 import NumericalMethod, {Point} from '@/methods/NumericalMethod'
-import {EvalFunction} from 'mathjs'
+import {EvalFunction, MathNode} from 'mathjs'
 
 interface RungeKuttaIteration {
     k1: number
@@ -12,10 +12,12 @@ interface RungeKuttaIteration {
 
 class RungeKutta extends NumericalMethod {
 
+    differentialEquation: MathNode
     iterations: RungeKuttaIteration[]
 
-    constructor(iterations: RungeKuttaIteration[]) {
+    constructor(differentialEquation: MathNode, iterations: RungeKuttaIteration[]) {
         super()
+        this.differentialEquation = differentialEquation
         this.iterations = iterations
     }
 
@@ -40,7 +42,7 @@ class RungeKutta extends NumericalMethod {
             step,
             iteration
         )
-        return new RungeKutta(iterations)
+        return new RungeKutta(parsedDifferentialEquation, iterations)
     }
 
     public static method(
