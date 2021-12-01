@@ -7,8 +7,16 @@
 
     <template #content>
       <AppPointsList v-model="pointsList"/>
-      {{pointsList}}
-      {{isPointsListValid}}
+
+      <div v-if="leastSquaresInterpolation" style="display: block">
+        <katex-element style="display: block"
+            :expression="`r = ${leastSquaresInterpolation.correlationCoefficient.toFixed(4)}`"/>
+        <katex-element style="display: block"
+            :expression="`m = ${leastSquaresInterpolation.slope.toFixed(4)}`"/>
+        <katex-element style="display: block"
+            :expression="`b = ${leastSquaresInterpolation.yIntercept.toFixed(4)}`"/>
+      </div>
+
     </template>
 
     <template #plot>
