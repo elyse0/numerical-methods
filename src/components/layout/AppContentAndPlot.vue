@@ -1,5 +1,5 @@
 <template>
-  <AppContentLayout>
+  <AppContentLayout class="content plot">
     <slot name="header"/>
 
     <div class="columns">
@@ -29,5 +29,11 @@ export default class AppContentAndPlot extends Vue {
 </script>
 
 <style scoped>
-
+div.layout.content.plot {
+  background-image: url('/numerical-methods/background-plot.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
 </style>
