@@ -1,7 +1,7 @@
 <template>
   <AppContentLayout class="mainpage">
 
-    <AppHero title="Métodos numéricos" subtitle="FES Aragón 2022-I"/>
+    <AppHero class="has-text-centered" title="Métodos numéricos" subtitle="FES Aragón 2022-I"/>
 
     <div>
 
