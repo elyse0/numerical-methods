@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+</head>
+<body>
+<div id="ggb-element"></div>
+
+<script>
+    let params = {"id": "app1", "appName": "3d", "width": 800, "height": 500, "showToolBar": false, "showAlgebraInput": false, "showMenuBar": false };
+    let applet = new GGBApplet(params, true);
+    window.addEventListener("load", function() {
+        applet.inject('ggb-element');
+    });
+
+    const values =
+        `17x-2y-3z=10
+        -5x-21y-2z=20
+        -5x-5y+22z=30`
+
+    const receiveDataFromWeb =  (message) => {
+
+        app1.newConstruction()
+
+        if (message.data.plot !== undefined) {
+            app1.evalCommand(message.data.plot)
+            app1.refreshViews()
+        }
+    }
+
+    window.addEventListener("message", receiveDataFromWeb);
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+</head>
+<body>
+<div id="calculator" style="width: 600px; height: 400px;"></div>
+
+<script>
+    const elt = document.getElementById('calculator')
+    const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
+    let mathFunction = {id: "function", latex: "", color: "#4db6ac"}
+    let tableP1 = {id: "tableP1", type: "table"}
+    let tableP2 = {id: "tableP2", type: "table"}
+    let tableP3 = {id: "tableP3", type: "table"}
+
+    const receiveDataFromWeb =  (message) => {
+
+        if (message.data.mathFunction === undefined) {
+            calculator.removeExpression(mathFunction)
+        } else {
+            mathFunction.latex = message.data.mathFunction
+            calculator.setExpression(mathFunction)
+        }
+
+        if (message.data.p1 === undefined) {
+            calculator.removeExpression(tableP1)
+        } else {
+            calculator.setExpression(getTablePoints(tableP1, message.data.p1))
+        }
+
+        if (message.data.p2 === undefined) {
+            calculator.removeExpression(tableP2)
+        } else {
+            calculator.setExpression(getTablePoints(tableP2, message.data.p2))
+        }
+
+        if (message.data.p3 === undefined) {
+            calculator.removeExpression(tableP3)
+        } else {
+            calculator.setExpression(getTablePoints(tableP3, message.data.p3));
+        }
+    }
+
+    const getColor = function (value) {
+        if (value > 0)
+            return "#f06292"
+
+        if (value < 0)
+            return "#64b5f6"
+
+        return "#66bb6a"
+    }
+
+    const getTablePoints = function (table, point) {
+
+        const x = point.x.toFixed(10)
+        const fx = point.fx.toFixed(10)
+
+        let columns = []
+        columns.push({latex: "x", values: [x, x]})
+        columns.push({latex: "y",
+            lines: true,
+            lineStyle: Desmos.Styles.DASHED,
+            color: getColor(point.fx),
+            values: [0, fx]})
+
+        table["columns"] = columns
+        return table
+    }
+
+    window.addEventListener("message", receiveDataFromWeb);
+</script>
+</body>
+</html>

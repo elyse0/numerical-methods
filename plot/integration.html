@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+</head>
+<body>
+<div id="calculator" style="width: 600px; height: 400px;"></div>
+
+<script>
+    const elt = document.getElementById('calculator')
+    const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
+
+    let functionFx = {id: "functionFx", latex: "", color: "#64b5f6"}
+    let integral = {id: "integral", latex: ""}
+    let integrationInterval = {id: "integrationInterval", latex: "", color: "#64b5f6"}
+
+    const receiveDataFromWeb =  (message) => {
+
+        if (message.data.functionFx !== undefined) {
+            functionFx.latex = message.data.functionFx
+            calculator.setExpression(functionFx)
+        } else {
+            calculator.removeExpression(functionFx)
+        }
+
+        if (message.data.integral !== undefined) {
+            integral.latex = message.data.integral
+            calculator.setExpression(integral)
+        } else {
+            calculator.removeExpression(integral)
+        }
+
+        if (message.data.integrationInterval !== undefined) {
+            integrationInterval.latex = message.data.integrationInterval
+            calculator.setExpression(integrationInterval)
+        } else {
+            calculator.removeExpression(integrationInterval)
+        }
+    }
+
+    window.addEventListener("message", receiveDataFromWeb);
+</script>
+</body>
+</html>

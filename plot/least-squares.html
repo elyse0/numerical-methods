@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+</head>
+<body>
+<div id="calculator" style="width: 600px; height: 400px;"></div>
+
+<script>
+    const elt = document.getElementById('calculator')
+    const calculator = Desmos.GraphingCalculator(elt, {expressionsCollapsed: true})
+    let functionFx = {id: "functionFx", latex: "", color: "#64b5f6"}
+
+    let table = {id: "table1", type: "table"}
+
+    const receiveDataFromWeb =  (message) => {
+
+        console.log(message)
+
+        if (message.data.functionFx !== undefined) {
+            functionFx.latex = message.data.functionFx
+            calculator.setExpression(functionFx)
+        } else {
+            calculator.removeExpression(functionFx)
+        }
+
+        if (message.data.table !== undefined){
+            let columns = []
+            columns.push({latex: "x", values: message.data.table.x})
+            columns.push({latex: "y",
+                color: "#f06292",
+                values: message.data.table.y})
+            table["columns"] = columns
+            calculator.setExpression(table)
+        } else {
+            calculator.removeExpression(table)
+        }
+    }
+
+    window.addEventListener("message", receiveDataFromWeb);
+</script>
+</body>
+</html>
