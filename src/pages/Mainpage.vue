@@ -1,5 +1,5 @@
 <template>
-  <AppContentLayout>
+  <AppContentLayout class="mainpage">
 
     <AppHero title="Métodos numéricos" subtitle="FES Aragón 2022-I"/>
 
@@ -59,9 +59,21 @@ export default class Mainpage extends Vue {
 </script>
 
 <style scoped>
+div.layout.mainpage {
+  background-image: url('/numerical-methods/background.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
 .logos img {
   height: 35px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+footer {
+  background-color: transparent;
 }
 </style>
