@@ -22,5 +22,7 @@ export default class AppLayout extends Vue {
 </script>
 
 <style scoped>
-
+div.layout {
+  min-height: 100vh;
+}
 </style>
