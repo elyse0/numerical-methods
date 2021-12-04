@@ -71,6 +71,10 @@ export default class AppNavbar extends Vue {
 </script>
 
 <style scoped>
+nav.navbar {
+  background-color: transparent;
+}
+
 .navbar-item img {
   max-height: 3rem;
 }
